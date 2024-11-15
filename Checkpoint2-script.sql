@@ -165,3 +165,35 @@ SELECT u.username AS user_name, c.name AS collection_name, c.date_created
 FROM User u
 JOIN Collection c ON u.user_id = c.user_id
 ORDER BY u.username;
+
+-- view all albums in a specific collection --
+SELECT a.title, a.release_date
+FROM Album a
+JOIN Appears_in ai ON a.album_id = ai.album_id
+JOIN Collection c ON ai.collection_id = c.collection_id
+WHERE c.name = 'HIM Collection';
+
+-- view the total number of songs in each album ---
+SELECT a.title AS album_title, COUNT(s.song_id) AS total_songs
+FROM Album a
+JOIN Song s ON a.album_id = s.album_id
+GROUP BY a.title;
+
+-- View all songs in a specific album
+SELECT s.title, s.length, s.composer
+FROM Song s
+JOIN Album a ON s.album_id = a.album_id
+WHERE a.title = 'Razorblade Romance';
+
+-- see review reviews --
+
+SELECT a.title AS album_title, r.rating, r.review_text, r.review_date, u.username
+FROM Review r
+JOIN Album a ON r.album_id = a.album_id
+JOIN User u ON r.user_id = u.user_id
+ORDER BY r.review_date DESC;
+
+
+
+
+
