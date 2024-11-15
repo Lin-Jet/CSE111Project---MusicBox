@@ -1,3 +1,12 @@
+DROP TABLE IF EXISTS Appears_in;
+DROP TABLE IF EXISTS User_Collections;
+DROP TABLE IF EXISTS Review;
+DROP TABLE IF EXISTS Song;
+DROP TABLE IF EXISTS Collection;
+DROP TABLE IF EXISTS Album;
+DROP TABLE IF EXISTS Artist;
+DROP TABLE IF EXISTS User;
+
 CREATE TABLE User (
                       user_id INTEGER PRIMARY KEY,
                       username VARCHAR(50) NOT NULL,

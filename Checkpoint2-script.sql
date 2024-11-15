@@ -161,10 +161,12 @@ UPDATE Review SET rating = 4 WHERE review_id = 1;
 DELETE FROM Review WHERE review_id = 1;
 
 -- view collections of all users
-SELECT u.username AS user_name, c.name AS collection_name, c.date_created 
+SELECT u.username AS user_name, c.name AS collection_name, c.date_created
 FROM User u
-JOIN Collection c ON u.user_id = c.user_id
+JOIN User_Collections uc ON u.user_id = uc.user_id
+JOIN Collection c ON uc.collection_id = c.collection_id
 ORDER BY u.username;
+
 
 -- view all albums in a specific collection --
 SELECT a.title, a.release_date
