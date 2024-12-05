@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import './App.scss';
-import logo from './ogo.png';
+import '../App.scss';
 import { useNavigate } from 'react-router-dom';
 
 function SignUp({ onSignIn }) {
