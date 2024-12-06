@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './routes/login';
 import './App.scss';
+import SignUp from "./routes/signup";
 
-function    App() {
+function App() {
     const [isSignedIn, setIsSignedIn] = useState(false);
 
     const handleSignIn = (account) => {
@@ -35,6 +36,13 @@ function    App() {
                     path="/"
                     element={<Login onSignIn={handleSignIn} />}
                 />
+                <Route
+                    path = "/signup"
+                    element = {<SignUp onSignIn={handleSignIn} />}
+                />
+                <Route
+
+                    />
             </Routes>
         </Router>
     );

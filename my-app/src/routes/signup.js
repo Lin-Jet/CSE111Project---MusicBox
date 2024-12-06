@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../App.scss';
 import { useNavigate } from 'react-router-dom';
+import './login.js';
 
 function SignUp({ onSignIn }) {
     const [Fname, setFname] = useState('');
@@ -116,7 +117,7 @@ function SignUp({ onSignIn }) {
                         <button
                             type="button"
                             className="sign-up-button"
-                            onClick={() => navigate('/signin')}
+                            onClick={() => navigate('/')}
                         >
                             Back to Sign In
                         </button>

@@ -102,7 +102,7 @@ function Login({ onSignIn }) {
                         <button
                             type="button"
                             className="sign-up-button"
-                            onClick={() => navigate('/signup')}
+                            onClick={() => navigate('./signup')}
                         >
                             Sign Up
                         </button>
