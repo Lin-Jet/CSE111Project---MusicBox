@@ -1,10 +1,11 @@
-import logo from './imgs/logo.png';
+import './App.scss';
+import logo from '../imgs/logo.png';
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './routes/Login';
-import './routes/Login.scss';
-import SignUp from "./routes/signup";
-import Index from "./routes";
+import Login from './login';
+import './App.scss';
+import SignUp from "./signup";
+import Index from "./index";
 
 function App() {
     const [isSignedIn, setIsSignedIn] = useState(false);
@@ -23,14 +24,12 @@ function App() {
 
     return (
         <Router>
-            <div className = "body">
             <img className="logo" src={logo} alt="Logo" />
 
             <div className="wave-container">
                 <div className="wave"></div>
                 <div className="wave"></div>
                 <div className="wave"></div>
-            </div>
             </div>
 
             <Routes>
@@ -43,9 +42,9 @@ function App() {
                     element = {<SignUp onSignIn={handleSignIn} />}
                 />
                 <Route
-                    path="/index"
-                    element={<Index  onSignIn={handleSignIn} />}
-                />
+                    path = "/index"
+                    element={<Index onSignIn={handleSignIn} />}
+                    />
             </Routes>
         </Router>
     );

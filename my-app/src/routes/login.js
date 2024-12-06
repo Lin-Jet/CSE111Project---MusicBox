@@ -1,53 +1,28 @@
 import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import '../App.scss';
+import './App.scss';
 import './signup.js';
-
 
 function Login({ onSignIn }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [role, setRole] = useState('User'); // State for role selection
 
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const signInData = {
-            email: username,
-            password: password,
-        };
+        console.log('Login role:', role);
 
-        try {
-            const response = await fetch('http://localhost:4000/signIn', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(signInData),
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                console.log('Sign-in successful:', data);
-
-                onSignIn({
-                    email: signInData.email,
-                    fname: data.first_name,
-                    lname: data.last_name,
-                });
-
-                navigate('/chat');
-            } else {
-                const errorData = await response.json();
-                alert('Error signing in: ' + errorData.error);
-            }
-        } catch (error) {
-            console.error('Error signing in:', error);
-            alert('An error occurred during sign-in');
+        // Navigate to different pages based on role
+        if (role === 'User') {
+            navigate('/index'); // Redirect to user index
+        } else if (role === 'Artist') {
+            navigate('/artist-index'); // Redirect to artist index
         }
     };
 
@@ -59,7 +34,30 @@ function Login({ onSignIn }) {
             <div className="backdrop">
                 <div className="sign-in-container">
                     <h2 className="sign-in-title">Sign In</h2>
-                    <p className="sign-in-subtitle">Please sign in to continue</p>
+                    <div
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'flex-start',
+                            marginBottom: '1rem',
+                        }}
+                    >
+                        <p style={{ color: '#000', marginRight: '1rem', fontWeight: 'bold' }}>Please sign as a:</p>
+                        <select
+                            id="role"
+                            style={{
+                                color: '#000',
+                                padding: '0.5rem',
+                                border: '1px solid #ccc',
+                                borderRadius: '4px',
+                            }}
+                            value={role}
+                            onChange={(e) => setRole(e.target.value)}
+                        >
+                            <option value="User">User</option>
+                            <option value="Artist">Artist</option>
+                        </select>
+                    </div>
                     <form onSubmit={handleSubmit}>
                         <input
                             type="text"
@@ -84,17 +82,6 @@ function Login({ onSignIn }) {
                             >
                                 {showPassword ? <FaEyeSlash /> : <FaEye />}
                             </span>
-                        </div>
-                        <div className="sign-in-form-group">
-                            <input type="checkbox" className="sign-in-checkbox" />
-                            <label className="sign-in-checkbox-label">Remember me</label>
-                            <a
-                                href="#"
-                                className="forgot-pass"
-                                onClick={() => setIsModalOpen(true)}
-                            >
-                                Forgot password?
-                            </a>
                         </div>
                         <button type="submit" className="sign-in-button">
                             Sign In
