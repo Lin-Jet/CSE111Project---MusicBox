@@ -34,30 +34,6 @@ function Login({ onSignIn }) {
             <div className="backdrop">
                 <div className="sign-in-container">
                     <h2 className="sign-in-title">Sign In</h2>
-                    <div
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'flex-start',
-                            marginBottom: '1rem',
-                        }}
-                    >
-                        <p style={{ color: '#000', marginRight: '1rem', fontWeight: 'bold' }}>Please sign as a:</p>
-                        <select
-                            id="role"
-                            style={{
-                                color: '#000',
-                                padding: '0.5rem',
-                                border: '1px solid #ccc',
-                                borderRadius: '4px',
-                            }}
-                            value={role}
-                            onChange={(e) => setRole(e.target.value)}
-                        >
-                            <option value="User">User</option>
-                            <option value="Artist">Artist</option>
-                        </select>
-                    </div>
                     <form onSubmit={handleSubmit}>
                         <input
                             type="text"

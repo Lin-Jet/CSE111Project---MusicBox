@@ -9,33 +9,29 @@ function SignUp({ onSignIn }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [role, setRole] = useState('User');
 
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Check if passwords match
         if (password !== confirmPassword) {
             alert('Passwords do not match');
             return;
         }
 
         if(password.length < 8 || password.length > 16){
-            alert('Password must be of length 8 to 16')
+            alert('Password must be of length 8 to 16');
             return;
         }
-
-        console.log('FName:', Fname);
-        console.log('LName:', Lname);
-        console.log('Email:', email);
-        console.log('Password:', password);
 
         const accountData = {
             first_name: Fname,
             last_name: Lname,
             email: email,
-            password: password
+            password: password,
+            role: role
         };
 
         try {
@@ -48,7 +44,12 @@ function SignUp({ onSignIn }) {
             });
 
             if (response.ok) {
-                onSignIn({fname: accountData.first_name, lname: accountData.last_name, email: accountData.email});
+                onSignIn({
+                    fname: accountData.first_name,
+                    lname: accountData.last_name,
+                    email: accountData.email,
+                    role: accountData.role
+                });
                 navigate('/chat');
             } else {
                 const errorData = await response.json();
@@ -60,6 +61,25 @@ function SignUp({ onSignIn }) {
         }
     };
 
+    const selectedStyle = {
+        backgroundColor: '#124ba2',
+        color: '#fff',
+        border: 'none',
+        borderRadius: '8px',
+        padding: '10px 20px',
+        marginRight: '10px',
+        cursor: 'pointer'
+    };
+
+    const unselectedStyle = {
+        backgroundColor: '#ccc',
+        color: '#000',
+        border: 'none',
+        borderRadius: '8px',
+        padding: '10px 20px',
+        marginRight: '10px',
+        cursor: 'pointer'
+    };
 
     return (
         <div className="sign-in-app">
@@ -68,8 +88,26 @@ function SignUp({ onSignIn }) {
             </div>
             <div className="backdrop">
                 <div className="sign-in-container">
-                    <h2 className="sign-in-title"></h2>
                     <p className="sign-in-subtitle">Sign Up</p>
+                    <p style={{ color: '#000', fontWeight: 'bold', marginBottom: '10px' }}>
+                        Are you a User or an Artist?
+                    </p>
+                    <div style={{ marginBottom: '20px' }}>
+                        <button
+                            type="button"
+                            onClick={() => setRole('User')}
+                            style={role === 'User' ? selectedStyle : unselectedStyle}
+                        >
+                            User
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setRole('Artist')}
+                            style={role === 'Artist' ? selectedStyle : unselectedStyle}
+                        >
+                            Artist
+                        </button>
+                    </div>
                     <form onSubmit={handleSubmit}>
                         <input
                             type="text"

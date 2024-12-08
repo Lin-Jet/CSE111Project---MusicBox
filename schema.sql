@@ -73,3 +73,7 @@ CREATE TABLE Review (
                         FOREIGN KEY (user_id) REFERENCES User(user_id),
                         FOREIGN KEY (album_id) REFERENCES Album(album_id)
 );
+
+
+ALTER TABLE User
+ADD COLUMN role VARCHAR(50) NOT NULL DEFAULT 'user';

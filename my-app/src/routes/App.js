@@ -6,6 +6,8 @@ import Login from './login';
 import './App.scss';
 import SignUp from "./signup";
 import Index from "./index";
+import Albums from "./Users/albums";
+
 
 function App() {
     const [isSignedIn, setIsSignedIn] = useState(false);
@@ -45,6 +47,10 @@ function App() {
                     path = "/index"
                     element={<Index onSignIn={handleSignIn} />}
                     />
+                <Route
+                    path = "/albums"
+                    element = {<Albums onSignIn={handleSignIn} />}
+                />
             </Routes>
         </Router>
     );
