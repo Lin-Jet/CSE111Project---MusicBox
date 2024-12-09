@@ -5,18 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c85bea48-d01d-4e03-adb6-bed5c5b6ea0c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/my-app/src/routes/Users/albums.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my-app/src/routes/Users/collection.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my-app/src/routes/Users/reviews.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my-app/src/routes/Artist/ArtistIndex.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my-app/src/routes/Artist/Artist_albums.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my-app/src/routes/Artist/Profile.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my-app/src/routes/Artist/artist.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my-app/src/routes/Users/LogOutBtn.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my-app/src/routes/Users/users.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-app/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my-app/src/routes/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-app/src/routes/App.scss" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/App.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-app/src/routes/Users/albums.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/Users/albums.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-app/src/routes/Users/collection.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/Users/collection.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-app/src/routes/Users/reviews.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/Users/reviews.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my-app/src/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-app/src/routes/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-app/src/routes/signup.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/signup.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/schema.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,10 +45,16 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
     "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/my-app/src/routes" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -63,7 +70,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1733618707037</updated>
-      <workItem from="1733618708570" duration="7595000" />
+      <workItem from="1733618708570" duration="21351000" />
     </task>
     <servers />
   </component>

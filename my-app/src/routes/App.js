@@ -7,7 +7,10 @@ import './App.scss';
 import SignUp from "./signup";
 import Index from "./index";
 import Albums from "./Users/albums";
-
+import Collections from "./Users/collection";
+import Reviews from "./Users/reviews";
+import Artist from "./Artist/ArtistIndex";
+import Artist_albums from "./Artist/Artist_albums";
 
 function App() {
     const [isSignedIn, setIsSignedIn] = useState(false);
@@ -51,6 +54,27 @@ function App() {
                     path = "/albums"
                     element = {<Albums onSignIn={handleSignIn} />}
                 />
+
+                <Route
+                    path = "/collection"
+                    element = {<Collections onSignIn={handleSignIn} />}
+                    />
+
+                <Route
+                    path = "/reviews"
+                    element = {<Reviews onSignIn={handleSignIn} />}
+                    />
+
+                <Route
+                    path = '/artist'
+                    element = { <Artist onSignIn={handleSignIn} />}
+                />
+
+                <Route
+                    path = "Aalbums"
+                    element = { <Artist_albums onSignIn={handleSignIn} />}
+                    />
+
             </Routes>
         </Router>
     );

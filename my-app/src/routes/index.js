@@ -1,14 +1,13 @@
 import "./App.scss";
 import { useNavigate } from "react-router-dom";
-import { useState } from 'react';
-import Albums from './Users/albums';
-
+import LogoutButton from './Users/LogOutBtn';
 
 function Index({ onSignIn }) {
     const navigate = useNavigate();
 
     return (
         <div className="index">
+            <LogoutButton />
             <header
                 className="index-header"
                 style={{
@@ -22,7 +21,7 @@ function Index({ onSignIn }) {
                 <h1 className="line-1 anim-typewriter"
                     style={{
                         marginBottom: '30%',
-                        marginLeft: '27%',
+                        marginLeft: '18%',
                     }}
                 >Welcome to Back</h1>
                 <p className="sentence">Track favorites, review albums, and connect with other music lovers.</p>
@@ -71,11 +70,11 @@ function Index({ onSignIn }) {
                     }}
                     onClick={() => navigate('/collection')}
                 >
-                    Your Collection
+                    My Collection
                 </button>
             </div>
         </div>
-            );
-            }
+    );
+}
 
-            export default Index;
+export default Index;

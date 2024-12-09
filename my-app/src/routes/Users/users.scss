@@ -1,0 +1,148 @@
+.index-745 {
+  background: linear-gradient(135deg, rgba(16, 16, 16, 0.5) 0%, rgba(16, 16, 16, 0.5) 105%);
+  border-radius: 40px;
+  min-height: 90vh;
+  height: 80vh;
+  padding: 2rem;
+  font-family: 'Anonymous Pro', monospace;
+}
+
+.index-header-745 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+
+  h1,
+  .line-1-745.anim-typewriter-745 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .sentence-745 {
+    font-size: 1.2rem;
+    color: #ddd;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+.album-list-745 {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+
+  h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
+  }
+
+  ul {
+    li {
+      color: #333;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #ccc;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      strong {
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
+
+
+.reviews-page-946 {
+  background: linear-gradient(135deg, rgba(16, 16, 16, 0.5) 0%, rgba(16, 16, 16, 0.5) 105%);
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Anonymous Pro', monospace;
+  color: #fff;
+  border-radius: 40px;
+}
+
+.reviews-header-946 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+
+  .title-946 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .info-946 {
+    font-size: 1.2rem;
+    color: #ddd;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+.reviews-list-946 {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+
+  .sub-title-946 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  ul {
+    li {
+      color: #333;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #ccc;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      strong {
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
+
+.button-123 {
+  border-radius: 15px;
+  background-color: #020202;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 1rem;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.button-123:hover  {
+  cursor: pointer;
+}
+
+

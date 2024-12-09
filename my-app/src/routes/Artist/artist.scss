@@ -1,0 +1,156 @@
+.artist-page-548 {
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Anonymous Pro', monospace;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.artist-header-548 {
+  text-align: center;
+  margin-bottom: 2rem;
+  
+
+  .artist-title-548 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+
+  .artist-subtitle-548 {
+    font-size: 1.2rem;
+    color: #ddd;
+  }
+}
+
+.artist-nav-548 {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  .artist-button-548 {
+    padding: 10px 20px;
+    background-color: #020202;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+
+    &:hover {
+      background-color: #3a66a4;
+    }
+  }
+}
+
+.artist-logout-548 {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+
+
+.artist-albums-548 {
+  background: linear-gradient(135deg, rgba(25, 25, 25, 0.8) 0%, rgba(18, 75, 162, 0.5) 100%);
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Anonymous Pro', monospace;
+  color: #fff;
+}
+
+.artist-albums-header-548 {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: #ddd;
+  }
+}
+
+.albums-list-548 {
+  background: #fff;
+  color: #333;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+
+    li {
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+.add-album-548 {
+  background: #124ba2;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  color: #fff;
+  text-align: center;
+
+  h2 {
+    margin-bottom: 1rem;
+  }
+
+  input {
+    display: block;
+    margin: 0.5rem auto;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 400px;
+  }
+
+  button {
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #124ba2;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+
+    &:hover {
+      background-color: #ddd;
+    }
+  }
+}
+
+.artist-logout-548 {
+  text-align: center;
+
+  button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    background-color: #fff;
+    color: #124ba2;
+
+    &:hover {
+      background-color: #ddd;
+    }
+  }
+}
