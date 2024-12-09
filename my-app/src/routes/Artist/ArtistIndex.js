@@ -21,12 +21,14 @@ function Artist() {
                 >
                     Your Albums
                 </button>
+                {/*
                 <button
                     className="artist-button-548"
                     onClick={() => navigate('/artist-profile')}
                 >
                     Your Profile
                 </button>
+                */}
             </div>
 
             <div className="artist-logout-548">

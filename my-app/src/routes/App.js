@@ -11,6 +11,7 @@ import Collections from "./Users/collection";
 import Reviews from "./Users/reviews";
 import Artist from "./Artist/ArtistIndex";
 import Artist_albums from "./Artist/Artist_albums";
+{/*import Profile from "./Artist/artist_profile";*/}
 
 function App() {
     const [isSignedIn, setIsSignedIn] = useState(false);
@@ -74,6 +75,12 @@ function App() {
                     path = "Aalbums"
                     element = { <Artist_albums onSignIn={handleSignIn} />}
                     />
+
+                {/* <Route
+                    path = 'profile'
+                    element = { <Profile onSignIn={handleSignIn} />}
+                    />
+                */}
 
             </Routes>
         </Router>

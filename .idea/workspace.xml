@@ -5,19 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c85bea48-d01d-4e03-adb6-bed5c5b6ea0c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/my-app/src/routes/Artist/ArtistIndex.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my-app/src/routes/Artist/Artist_albums.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my-app/src/routes/Artist/Profile.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my-app/src/routes/Artist/artist.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my-app/src/routes/Users/LogOutBtn.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my-app/src/routes/Users/users.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-app/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my-app/src/routes/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-app/src/routes/Users/albums.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/Users/albums.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-app/src/routes/Users/collection.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/Users/collection.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-app/src/routes/Users/reviews.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/Users/reviews.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-app/src/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-app/src/routes/Artist/ArtistIndex.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/Artist/ArtistIndex.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-app/src/routes/Artist/Profile.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-app/src/routes/Artist/artist.scss" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/Artist/artist.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +63,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1733618707037</updated>
-      <workItem from="1733618708570" duration="21351000" />
+      <workItem from="1733618708570" duration="22715000" />
     </task>
     <servers />
   </component>
