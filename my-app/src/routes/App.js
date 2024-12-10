@@ -1,3 +1,4 @@
+import axios from 'axios';
 import './App.scss';
 import logo from '../imgs/logo.png';
 import React, { useState } from 'react';
@@ -12,6 +13,9 @@ import Reviews from "./Users/reviews";
 import Artist from "./Artist/ArtistIndex";
 import Artist_albums from "./Artist/Artist_albums";
 {/*import Profile from "./Artist/artist_profile";*/}
+
+
+   const url = 'http://localhost:5001/api';
 
 function App() {
     const [isSignedIn, setIsSignedIn] = useState(false);

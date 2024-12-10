@@ -1,28 +1,38 @@
 import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { login } from './apiService';
 import './App.scss';
-import './signup.js';
 
 function Login({ onSignIn }) {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [role, setRole] = useState('User'); // State for role selection
+    const [role, setRole] = useState('User'); // Default to "User"
+    const [error, setError] = useState('');
 
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
 
-        console.log('Login role:', role);
+        try {
+            const response = await login({ email, password });
 
-        // Navigate to different pages based on role
-        if (role === 'User') {
-            navigate('/index'); // Redirect to user index
-        } else if (role === 'Artist') {
-            navigate('/artist-index'); // Redirect to artist index
+            // Store the user data in localStorage
+            localStorage.setItem('user', JSON.stringify(response));
+
+            // Redirect based on selected role
+            if (role === 'User') {
+                navigate('/index');
+            } else if (role === 'Artist') {
+                navigate('/artist');
+            } else {
+                setError('Invalid role selected. Please try again.');
+            }
+        } catch (error) {
+            alert('Invalid email or password. Please try again.');
         }
     };
 
@@ -36,14 +46,14 @@ function Login({ onSignIn }) {
                     <h2 className="sign-in-title">Sign In</h2>
                     <form onSubmit={handleSubmit}>
                         <input
-                            type="text"
+                            type="email"
                             className="sign-in-input"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            placeholder="Username"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Email"
                             required
                         />
-                        <div className="password-wrapper">
+                        <div className="password-wrapper" style={{ position: 'relative' }}>
                             <input
                                 type={showPassword ? 'text' : 'password'}
                                 className="sign-in-input"
@@ -55,17 +65,47 @@ function Login({ onSignIn }) {
                             <span
                                 className="password-toggle-icon"
                                 onClick={() => setShowPassword(!showPassword)}
+                                style={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    right: '10px',
+                                    transform: 'translateY(-50%)',
+                                    cursor: 'pointer',
+                                    fontSize: '20px',
+                                    color: '#888',
+                                }}
                             >
                                 {showPassword ? <FaEyeSlash /> : <FaEye />}
                             </span>
                         </div>
+                        <select
+                            className="sign-in-input"
+                            value={role}
+                            onChange={(e) => setRole(e.target.value)}
+                            style={{
+                                marginTop: '10px',
+                                marginBottom: '10px',
+                                padding: '10px',
+                                borderRadius: '8px',
+                                border: '1px solid #ccc',
+                                fontSize: '16px',
+                                width: '100%',
+                            }}
+                        >
+                            <option value="User">User</option>
+                            <option value="Artist">Artist</option>
+                        </select>
+                        {error && <div className="error-message" style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
                         <button type="submit" className="sign-in-button">
                             Sign In
                         </button>
                         <button
                             type="button"
-                            className="sign-up-button"
-                            onClick={() => navigate('./signup')}
+                            className="sign-in-button"
+                            style={{
+                                marginTop: '10px',
+                            }}
+                            onClick={() => navigate('/signup')}
                         >
                             Sign Up
                         </button>

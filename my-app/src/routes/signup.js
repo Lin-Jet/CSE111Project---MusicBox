@@ -35,7 +35,7 @@ function SignUp({ onSignIn }) {
         };
 
         try {
-            const response = await fetch('http://localhost:4000/accounts', {
+            const response = await fetch('http://localhost:5000/accounts', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
