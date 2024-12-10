@@ -44,3 +44,7 @@ class Review(db.Model):
     review_date = db.Column(db.Date)
     user_id = db.Column(db.Integer, db.ForeignKey('User.user_id'))
     album_id = db.Column(db.Integer, db.ForeignKey('Album.album_id'))
+
+if __name__ == '__main__':
+    db.create_all()
+    print("Database tables created.")

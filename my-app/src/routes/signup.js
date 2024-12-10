@@ -35,7 +35,7 @@ function SignUp({ onSignIn }) {
         };
 
         try {
-            const response = await fetch('http://localhost:4000/accounts', {
+            const response = await fetch('http://localhost:3000/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -50,7 +50,7 @@ function SignUp({ onSignIn }) {
                     email: accountData.email,
                     role: accountData.role
                 });
-                navigate('/chat');
+                navigate('/albums');
             } else {
                 const errorData = await response.json();
                 alert('Error creating account: ' + errorData.message);

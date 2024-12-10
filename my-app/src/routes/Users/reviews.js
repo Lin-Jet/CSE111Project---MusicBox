@@ -81,6 +81,7 @@ function Reviews () {
                         {reviews.map(review => (
                             <li key={review.id} style={{ marginBottom: '10px' }}>
                                 <strong>{review.title}</strong> by {review.author}
+                                <p>{review.reviewDescription}</p>
                                 <br />
                                 Posted on: {review.date}
                             </li>

@@ -11,6 +11,15 @@ function Albums() {
     const [albums, setAlbums] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [newAlbum, setNewAlbum] = useState({
+        album_id: '',
+        title: '',
+        artist_name: '', 
+        genre: '',
+        release_date: '',
+    });
+    
+    const [artists, setArtists] = useState([]);
 
     useEffect(() => {
         axios.get('/api/albums')
@@ -24,6 +33,45 @@ function Albums() {
                 setLoading(false);
             });
     }, []);
+
+    
+    useEffect(() => {
+        axios.get('/api/artists') // Fetch artist data from the API
+            .then(response => {
+                setArtists(response.data || []); // Save artists to state or use an empty array
+            })
+            .catch(error => {
+                console.error('Error fetching artists:', error);
+            });
+    }, []);
+
+    const handleAlbumSubmit = async (e) => {
+        e.preventDefault();
+    
+        if (!newAlbum.title || !newAlbum.artist_id) {
+            alert('Title and Artist ID are required');
+            return;
+        }
+    
+        try {
+            const response = await axios.post('/api/albums', newAlbum, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            console.log('New album response:', response.data);
+            if (response.status === 201) {
+                alert('Album added successfully!');
+                setAlbums([...albums, response.data]); 
+                setNewAlbum({ album_id: '', title: '', artist_id: '', genre: '', release_date: '' });
+            }
+        } catch (error) {
+            console.error('Error adding album:', error);
+            alert('Failed to add album. Please try again.');
+        }
+    };
+    
 
     if (loading) {
         return (
@@ -80,7 +128,7 @@ function Albums() {
                 ) : (
                     <ul style={{ listStyleType: 'none', padding: 0 }}>
                         {albums.map(album => (
-                            <li key={album.id} style={{ marginBottom: '10px' }}>
+                            <li key={album.album_id} style={{ marginBottom: '10px' }}>
                                 <strong>{album.title}</strong> by {album.artist}
                                 <br />
                                 Genre: {album.genre}, Released: {album.release_date}
@@ -89,6 +137,49 @@ function Albums() {
                     </ul>
                 )}
             </div>
+            
+            <form onSubmit={handleAlbumSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <input
+                    type="text"
+                    placeholder="Album Title"
+                    value={newAlbum.title}
+                    onChange={(e) => setNewAlbum({ ...newAlbum, title: e.target.value })}
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="Artist Name"
+                    value={newAlbum.artist_name}
+                    onChange={(e) => setNewAlbum({ ...newAlbum, artist_name: e.target.value })}
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="Genre"
+                    value={newAlbum.genre}
+                    onChange={(e) => setNewAlbum({ ...newAlbum, genre: e.target.value })}
+                />
+                <input
+                    type="date"
+                    value={newAlbum.release_date}
+                    onChange={(e) => setNewAlbum({ ...newAlbum, release_date: e.target.value })}
+                />
+                <button
+                    type="submit"
+                    style={{
+                        padding: '10px 20px',
+                        backgroundColor: '#124ba2',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                    }}
+                >
+                    Add Album
+                </button>
+            </form>
+
+                    
             <button
                 style={{
                     padding: '10px 20px',

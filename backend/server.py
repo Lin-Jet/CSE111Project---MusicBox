@@ -9,32 +9,54 @@ from models import User, Artist, Album, Review, db, app
 x = datetime.datetime.now()
 
 
-
-
 # Signup route
-@app.route('/accounts', methods=['POST'])
+@app.route('/signup', methods=['POST'])
 def create_account():
     data = request.get_json()
 
+    # Validate input
     if not data.get('email') or not data.get('password'):
         return jsonify({"message": "Email and password are required"}), 400
 
+    if data.get('role') not in ['User', 'Artist']:
+        return jsonify({"message": "Invalid role specified"}), 400
+
+    # Check for duplicate email in the User table
     if db.session.query(User).filter_by(email=data['email']).first():
         return jsonify({"message": "Email already exists"}), 409
 
-    hashed_password = generate_password_hash(data['password'], method='sha256')
-    new_user = User(
-        username=f"{data['first_name']} {data['last_name']}",
-        password=hashed_password,
-        email=data['email'],
-        name=f"{data['first_name']} {data['last_name']}",
-        role=data.get('role', 'User')
-    )
+    hashed_password = generate_password_hash(data['password'], method='pbkdf2:sha256')
 
-    db.session.add(new_user)
-    db.session.commit()
-    return jsonify({"message": "Account created successfully"}), 201
+    if data['role'] == 'User':
+        # Create a new User
+        new_user = User(
+            username=f"{data['first_name']} {data['last_name']}",
+            password=hashed_password,
+            email=data['email'],
+            name=f"{data['first_name']} {data['last_name']}",
+            role='User'
+        )
+        db.session.add(new_user)
 
+    elif data['role'] == 'Artist':
+        # Check for duplicate artist name
+        if db.session.query(Artist).filter_by(name=f"{data['first_name']} {data['last_name']}").first():
+            return jsonify({"message": "Artist name already exists"}), 409
+
+        # Create a new Artist
+        new_artist = Artist(
+            name=f"{data['first_name']} {data['last_name']}",
+            bio=data.get('bio', '')  # Optional bio field
+        )
+        db.session.add(new_artist)
+
+    # Commit transaction
+    try:
+        db.session.commit()
+        return jsonify({"message": f"{data['role']} account created successfully"}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": f"Error creating account: {str(e)}"}), 500
 
 # Login route
 @app.route('/login', methods=['POST'])
@@ -59,25 +81,162 @@ def login():
         return jsonify({"message": "Invalid email or password"}), 401
 
 
-@app.route('/api/albums')
+@app.route('/api/albums', methods=(['POST', 'GET']))
 def getAlbums():
-    albums = [
-        {
-            "id": 1,
-            "title": "Brennan Jones 1",
-            "artist": "Brennan Jones",
-            "genre": "Hip-Hop",
-            "release_date": "2024-9-12"
-        },
-        {
-            "id": 2,
-            "title": "Icedancer",
-            "artist": "Bladee",
-            "genre": "Hip-Hop",
-            "release_date": "2018-29-12"
-        }
-    ]
+    if request.method == 'POST':
+        data = request.get_json()
+        
+        # Validate input
+        title = data.get('title')
+        artist_name = data.get('artist_name')  # Get artist_name instead of artist_id
+        genre = data.get('genre')
+        release_date = data.get('release_date')
+
+        if not title or not artist_name:
+            return jsonify({"message": "Title and artist_name are required"}), 400
+
+        # Find or create the artist by name
+        artist = Artist.query.filter_by(name=artist_name).first()
+        if not artist:
+            # Create a new artist
+            artist = Artist(name=artist_name)
+            db.session.add(artist)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
+                return jsonify({"message": "Error creating artist"}), 500
+
+        # Create a new album
+        new_album = Album(
+            title=title,
+            album_art=data.get('album_art'),
+            release_date=release_date,
+            artist_id=artist.artist_id,  # Use the artist's ID
+            genre=genre
+        )
+
+        db.session.add(new_album)
+        try:
+            db.session.commit()
+            return jsonify({
+                "album_id": new_album.album_id,
+                "title": new_album.title,
+                "album_art": new_album.album_art,
+                "release_date": str(new_album.release_date),
+                "artist_name": artist.name,
+                "genre": new_album.genre,
+            }), 201
+        except IntegrityError:
+            db.session.rollback()
+            return jsonify({"message": "Error creating album"}), 500
+
+    elif request.method == 'GET':
+        # Fetch all albums
+        # albums = [
+        #     {
+        #         "id": 1,
+        #         "title": "Brennan Jones 1",
+        #         "artist": "Brennan Jones",
+        #         "genre": "Hip-Hop",
+        #         "release_date": "2024-9-12"
+        #     },
+        #     {
+        #         "id": 2,
+        #         "title": "Icedancer",
+        #         "artist": "Bladee",
+        #         "genre": "Hip-Hop",
+        #         "release_date": "2018-29-12"
+        #     }
+        # ]
+        albums = Album.query.all()
+        return jsonify([
+            {
+                "album_id": int(album.album_id),
+                "title": str(album.title),
+                "artist": str(album.artist),
+                "genre": str(album.genre),
+                "release_date": datetime(album.release_date)
+            }
+            for album in albums
+        ])
+   
     return jsonify(albums)
+
+
+@app.route('/api/artist', methods=['POST', 'GET', 'DELETE'])
+def handle_artist():
+    if request.method == 'POST':
+        # Create a new artist
+        data = request.get_json()
+        name = data.get('name')
+        bio = data.get('bio', '')
+
+        if not name:
+            return jsonify({"message": "Artist name is required"}), 400
+
+        # Check if the artist already exists
+        existing_artist = Artist.query.filter_by(name=name).first()
+        if existing_artist:
+            return jsonify({"message": "Artist already exists"}), 409
+
+        # Create new artist
+        new_artist = Artist(name=name, bio=bio)
+        db.session.add(new_artist)
+        try:
+            db.session.commit()
+            return jsonify({
+                "artist_id": new_artist.artist_id,
+                "name": new_artist.name,
+                "bio": new_artist.bio
+            }), 201
+        except IntegrityError:
+            db.session.rollback()
+            return jsonify({"message": "Error creating artist"}), 500
+
+    elif request.method == 'GET':
+        # Fetch all artists
+        artists = Artist.query.all()
+        return jsonify([
+            {
+                "artist_id": artist.artist_id,
+                "name": artist.name,
+                "bio": artist.bio
+            }
+            for artist in artists
+        ]), 200
+
+    elif request.method == 'DELETE':
+        # Delete an artist by ID or name
+        data = request.get_json()
+        artist_id = data.get('artist_id')
+        name = data.get('name')
+
+        if not artist_id and not name:
+            return jsonify({"message": "Either artist_id or name is required"}), 400
+
+        # Find the artist
+        if artist_id:
+            artist = Artist.query.get(artist_id)
+        elif name:
+            artist = Artist.query.filter_by(name=name).first()
+
+        if not artist:
+            return jsonify({"message": "Artist not found"}), 404
+
+        # Delete the artist
+        db.session.delete(artist)
+        try:
+            db.session.commit()
+            return jsonify({"message": "Artist deleted successfully"}), 200
+        except IntegrityError:
+            db.session.rollback()
+            return jsonify({"message": "Error deleting artist"}), 500
+
+    return jsonify({"message": "Invalid method"}), 405
+
+
+
 
 @app.route('/api/reviews')
 def getReviews(): 
@@ -103,4 +262,6 @@ def getReviews():
 
 # Running app
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()  #create tables once and then jsut check if they exist each time. 
     app.run(debug=True)
