@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import logo from '../../imgs/logo.png';
-import LogoutButton from './LogOutBtn'
-
+import LogoutButton from './LogOutBtn';
 
 function Albums() {
     const navigate = useNavigate();
@@ -14,11 +13,11 @@ function Albums() {
     const [newAlbum, setNewAlbum] = useState({
         album_id: '',
         title: '',
-        artist_name: '', 
+        artist_name: '',
         genre: '',
         release_date: '',
     });
-    
+
     const [artists, setArtists] = useState([]);
 
     useEffect(() => {
@@ -34,11 +33,10 @@ function Albums() {
             });
     }, []);
 
-    
     useEffect(() => {
-        axios.get('/api/artists') // Fetch artist data from the API
+        axios.get('/api/artists')
             .then(response => {
-                setArtists(response.data || []); // Save artists to state or use an empty array
+                setArtists(response.data || []);
             })
             .catch(error => {
                 console.error('Error fetching artists:', error);
@@ -47,31 +45,30 @@ function Albums() {
 
     const handleAlbumSubmit = async (e) => {
         e.preventDefault();
-    
-        if (!newAlbum.title || !newAlbum.artist_id) {
-            alert('Title and Artist ID are required');
+
+        if (!newAlbum.title || !newAlbum.artist_name) {
+            alert('Title and Artist Name are required');
             return;
         }
-    
+
         try {
             const response = await axios.post('/api/albums', newAlbum, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
-    
+
             console.log('New album response:', response.data);
             if (response.status === 201) {
                 alert('Album added successfully!');
-                setAlbums([...albums, response.data]); 
-                setNewAlbum({ album_id: '', title: '', artist_id: '', genre: '', release_date: '' });
+                setAlbums([...albums, response.data]);
+                setNewAlbum({ album_id: '', title: '', artist_name: '', genre: '', release_date: '' });
             }
         } catch (error) {
             console.error('Error adding album:', error);
             alert('Failed to add album. Please try again.');
         }
     };
-    
 
     if (loading) {
         return (
@@ -137,7 +134,7 @@ function Albums() {
                     </ul>
                 )}
             </div>
-            
+
             <form onSubmit={handleAlbumSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <input
                     type="text"
@@ -179,7 +176,6 @@ function Albums() {
                 </button>
             </form>
 
-                    
             <button
                 style={{
                     padding: '10px 20px',
@@ -190,7 +186,7 @@ function Albums() {
                     border: 'none',
                     cursor: 'pointer'
                 }}
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/index')}
             >
                 Go Back
             </button>

@@ -1,12 +1,15 @@
 
 from flask import Flask, request, jsonify
-
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 from models import User, Artist, Album, Review, db, app
 
 x = datetime.datetime.now()
+
+
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 
 # Signup route

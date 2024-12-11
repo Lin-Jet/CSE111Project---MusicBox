@@ -5,12 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c85bea48-d01d-4e03-adb6-bed5c5b6ea0c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-app/src/routes/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-app/src/routes/Artist/ArtistIndex.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/Artist/ArtistIndex.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-app/src/routes/Artist/Profile.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-app/src/routes/Artist/artist.scss" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/Artist/artist.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-app/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-app/src/routes/Users/albums.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/Users/albums.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-app/src/routes/Users/collection.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/Users/collection.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-app/src/routes/signup.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/signup.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,29 +24,33 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 0
-}]]></component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="2pub3KCgUIxZ1QjY8RCLHY4jCOl" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "AlexBrnach",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;flaskImplementation&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/my-app/src/routes" />
@@ -51,7 +59,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-WS-241.19416.2" />
+        <option value="bundled-python-sdk-d68999036c7f-b11f5e8da5ad-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-233.14475.56" />
       </set>
     </attachedChunks>
   </component>
@@ -64,6 +72,12 @@
       <option name="presentableId" value="Default" />
       <updated>1733618707037</updated>
       <workItem from="1733618708570" duration="22715000" />
+      <workItem from="1733896353491" duration="11000" />
+      <workItem from="1733896373483" duration="13000" />
+      <workItem from="1733896479566" duration="11000" />
+      <workItem from="1733896531237" duration="25000" />
+      <workItem from="1733896571793" duration="1055000" />
+      <workItem from="1733897653800" duration="2078000" />
     </task>
     <servers />
   </component>

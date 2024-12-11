@@ -21,7 +21,7 @@ function SignUp({ onSignIn }) {
             return;
         }
 
-        if(password.length < 8 || password.length > 16){
+        if (password.length < 8 || password.length > 16) {
             alert('Password must be of length 8 to 16');
             return;
         }
@@ -35,7 +35,7 @@ function SignUp({ onSignIn }) {
         };
 
         try {
-            const response = await fetch('http://localhost:3000/signup', {
+            const response = await fetch('http://127.0.0.1:5000/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -50,7 +50,11 @@ function SignUp({ onSignIn }) {
                     email: accountData.email,
                     role: accountData.role
                 });
-                navigate('/albums');
+                if (role === 'Artist') {
+                    navigate('/artist');
+                } else {
+                    navigate('/index');
+                }
             } else {
                 const errorData = await response.json();
                 alert('Error creating account: ' + errorData.message);

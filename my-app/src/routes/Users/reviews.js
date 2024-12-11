@@ -99,7 +99,7 @@ function Reviews () {
                     border: 'none',
                     cursor: 'pointer'
                 }}
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/index')}
             >
                 Go Back
             </button>
