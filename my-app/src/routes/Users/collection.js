@@ -16,7 +16,7 @@ function Collection  () {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get('/api/albums')
+        axios.get('http://127.0.0.1:5000/api/albums')
             .then(response => {
                 setAlbums(response.data || []);
                 setLoading(false);

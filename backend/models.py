@@ -3,8 +3,6 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
-
-
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///musicbox.db'
@@ -18,6 +16,7 @@ class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     password = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100))
+    username = db.Column(db.String(100), nullable=False)
     name = db.Column(db.String(100))
     role = db.Column(db.String(50), nullable=False, default='user')
 
@@ -35,6 +34,7 @@ class Album(db.Model):
     release_date = db.Column(db.Date)
     genre = db.Column(db.String(100), nullable=False)
     artist_id = db.Column(db.Integer, db.ForeignKey('Artist.artist_id'))
+    artist = db.relationship('Artist', backref='albums')
 
 class Review(db.Model):
     __tablename__ = 'Review'

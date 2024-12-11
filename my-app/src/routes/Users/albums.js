@@ -20,21 +20,10 @@ function Albums() {
 
     const [artists, setArtists] = useState([]);
 
-    useEffect(() => {
-        axios.get('/api/albums')
-            .then(response => {
-                setAlbums(response.data || []);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching albums:', error);
-                setError('Failed to load albums. Please try again later.');
-                setLoading(false);
-            });
-    }, []);
+
 
     useEffect(() => {
-        axios.get('/api/artists')
+        axios.get('http://127.0.0.1:5000/api/artists')
             .then(response => {
                 setArtists(response.data || []);
             })
@@ -52,7 +41,7 @@ function Albums() {
         }
 
         try {
-            const response = await axios.post('/api/albums', newAlbum, {
+            const response = await axios.post('http://127.0.0.1:5000/api/albums', newAlbum, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

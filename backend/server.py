@@ -5,11 +5,21 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 from models import User, Artist, Album, Review, db, app
+from sqlalchemy.exc import IntegrityError
+
 
 x = datetime.datetime.now()
 
 
+app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///musicbox.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
 CORS(app, resources={r"/*": {"origins": "*"}})
+
 
 
 # Signup route
@@ -88,20 +98,24 @@ def login():
 def getAlbums():
     if request.method == 'POST':
         data = request.get_json()
-        
-        # Validate input
         title = data.get('title')
-        artist_name = data.get('artist_name')  # Get artist_name instead of artist_id
+        artist_name = data.get('artist_name')
         genre = data.get('genre')
-        release_date = data.get('release_date')
+        release_date = data.get('releaseDate')  # Using releaseDate from frontend
 
         if not title or not artist_name:
             return jsonify({"message": "Title and artist_name are required"}), 400
 
-        # Find or create the artist by name
+        # Convert release_date to a Date object if provided
+        release_date_obj = None
+        if release_date:
+            try:
+                release_date_obj = datetime.strptime(release_date, "%Y-%m-%d").date()
+            except ValueError:
+                return jsonify({"message": "Invalid date format"}), 400
+
         artist = Artist.query.filter_by(name=artist_name).first()
         if not artist:
-            # Create a new artist
             artist = Artist(name=artist_name)
             db.session.add(artist)
             try:
@@ -110,12 +124,11 @@ def getAlbums():
                 db.session.rollback()
                 return jsonify({"message": "Error creating artist"}), 500
 
-        # Create a new album
         new_album = Album(
             title=title,
             album_art=data.get('album_art'),
-            release_date=release_date,
-            artist_id=artist.artist_id,  # Use the artist's ID
+            release_date=release_date_obj,
+            artist_id=artist.artist_id,
             genre=genre
         )
 
@@ -126,7 +139,7 @@ def getAlbums():
                 "album_id": new_album.album_id,
                 "title": new_album.title,
                 "album_art": new_album.album_art,
-                "release_date": str(new_album.release_date),
+                "releaseDate": str(new_album.release_date),
                 "artist_name": artist.name,
                 "genre": new_album.genre,
             }), 201
@@ -135,36 +148,19 @@ def getAlbums():
             return jsonify({"message": "Error creating album"}), 500
 
     elif request.method == 'GET':
-        # Fetch all albums
-        # albums = [
-        #     {
-        #         "id": 1,
-        #         "title": "Brennan Jones 1",
-        #         "artist": "Brennan Jones",
-        #         "genre": "Hip-Hop",
-        #         "release_date": "2024-9-12"
-        #     },
-        #     {
-        #         "id": 2,
-        #         "title": "Icedancer",
-        #         "artist": "Bladee",
-        #         "genre": "Hip-Hop",
-        #         "release_date": "2018-29-12"
-        #     }
-        # ]
         albums = Album.query.all()
         return jsonify([
             {
-                "album_id": int(album.album_id),
-                "title": str(album.title),
-                "artist": str(album.artist),
-                "genre": str(album.genre),
-                "release_date": datetime(album.release_date)
+                "album_id": album.album_id,
+                "title": album.title,
+                "artist_name": album.artist.name,
+                "genre": album.genre,
+                "releaseDate": str(album.release_date)
             }
             for album in albums
         ])
-   
-    return jsonify(albums)
+
+    return jsonify({"message": "Method not allowed"}), 405
 
 
 @app.route('/api/artist', methods=['POST', 'GET', 'DELETE'])
