@@ -5,16 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c85bea48-d01d-4e03-adb6-bed5c5b6ea0c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-app/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-app/src/routes/Users/albums.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/Users/albums.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-app/src/routes/Users/collection.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/Users/collection.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-app/src/routes/signup.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-app/src/routes/signup.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/musicbox.db" beforeDir="false" afterPath="$PROJECT_DIR$/backend/musicbox.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,9 +31,11 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenDatabaseViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;flaskImplementation&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/alex_s/Desktop/All_Desktop_Folders/CSE111/CSE111Project-MusicBox&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -77,7 +72,8 @@
       <workItem from="1733896479566" duration="11000" />
       <workItem from="1733896531237" duration="25000" />
       <workItem from="1733896571793" duration="1055000" />
-      <workItem from="1733897653800" duration="2078000" />
+      <workItem from="1733897653800" duration="2563000" />
+      <workItem from="1733902148401" duration="741000" />
     </task>
     <servers />
   </component>
