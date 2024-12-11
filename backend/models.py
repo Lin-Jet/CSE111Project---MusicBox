@@ -1,5 +1,3 @@
-
-
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
@@ -9,7 +7,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///musicbox.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-
 
 class User(db.Model):
     __tablename__ = 'User'
@@ -46,5 +43,6 @@ class Review(db.Model):
     album_id = db.Column(db.Integer, db.ForeignKey('Album.album_id'))
 
 if __name__ == '__main__':
-    db.create_all()
-    print("Database tables created.")
+    db.drop_all()  # Drop existing tables
+    db.create_all() # Create new tables
+    print("Database tables dropped and recreated.")

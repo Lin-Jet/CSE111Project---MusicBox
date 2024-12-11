@@ -18,9 +18,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+
 CORS(app, resources={r"/*": {"origins": "*"}})
-
-
 
 # Signup route
 @app.route('/signup', methods=['POST'])
@@ -94,6 +93,11 @@ def login():
         return jsonify({"message": "Invalid email or password"}), 401
 
 
+# @app.route('/api/artistAlbums', methods=['POST', 'GET'])
+# def ArtistAlbums():
+
+
+
 @app.route('/api/albums', methods=(['POST', 'GET']))
 def getAlbums():
     if request.method == 'POST':
@@ -110,7 +114,7 @@ def getAlbums():
         release_date_obj = None
         if release_date:
             try:
-                release_date_obj = datetime.strptime(release_date, "%Y-%m-%d").date()
+                release_date_obj = datetime.datetime.strptime(release_date, "%Y-%m-%d").date()
             except ValueError:
                 return jsonify({"message": "Invalid date format"}), 400
 

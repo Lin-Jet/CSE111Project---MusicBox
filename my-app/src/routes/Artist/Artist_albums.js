@@ -38,7 +38,11 @@ function Artist_albums() {
     };
 
     return (
-        <div className="artist-albums-548">
+        <div className="artist-albums-548"
+        style = {{
+
+        }}
+        >
             <header className="artist-albums-header-548">
                 <h1>Welcome to Your Albums Page</h1>
                 <p>Here, you can manage and add new albums.</p>
