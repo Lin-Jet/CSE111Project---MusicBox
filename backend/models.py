@@ -33,6 +33,7 @@ class Album(db.Model):
     title = db.Column(db.String(100), nullable=False)
     album_art = db.Column(db.Text)
     release_date = db.Column(db.Date)
+    genre = db.Column(db.String(100), nullable=False)
     artist_id = db.Column(db.Integer, db.ForeignKey('Artist.artist_id'))
 
 class Review(db.Model):
