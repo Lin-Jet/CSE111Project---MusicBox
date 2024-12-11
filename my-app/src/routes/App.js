@@ -11,7 +11,7 @@ import Albums from "./Users/albums";
 import Collections from "./Users/collection";
 import Reviews from "./Users/reviews";
 import Artist from "./Artist/ArtistIndex";
-import Artist_albums from "./Artist/Artist_albums";
+import ArtistAlbums from "./Artist/Artist_albums";
 {/*import Profile from "./Artist/artist_profile";*/}
 
 
@@ -77,7 +77,7 @@ function App() {
 
                 <Route
                     path = "Aalbums"
-                    element = { <Artist_albums onSignIn={handleSignIn} />}
+                    element = { < ArtistAlbums onSignIn={handleSignIn} />}
                     />
 
                 {/* <Route
