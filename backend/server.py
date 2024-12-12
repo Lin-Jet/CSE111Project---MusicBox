@@ -11,12 +11,12 @@ from sqlalchemy.exc import IntegrityError
 x = datetime.datetime.now()
 
 
-app = Flask(__name__)
+# app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///musicbox.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///musicbox.db'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+# db = SQLAlchemy(app)
 
 
 CORS(app, resources={r"/*": {"origins": "*"}})
