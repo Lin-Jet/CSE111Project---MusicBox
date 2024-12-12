@@ -18,7 +18,6 @@ function Login({ onSignIn }) {
 
         console.log('Login role:', role);
 
-        // Navigate to different pages based on role
         if (role === 'User') {
             navigate('/index'); // Redirect to user index
         } else if (role === 'Artist') {

@@ -13,7 +13,7 @@ function Reviews () {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get('/api/reviews')
+        axios.get('http://127.0.0.1:5000/api/reviews')
             .then(response => {
                 setReviews(response.data || []);
                 setLoading(false);

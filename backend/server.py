@@ -96,7 +96,7 @@ def login():
 # @app.route('/api/artistAlbums', methods=['POST', 'GET'])
 # def ArtistAlbums():
 
-@app.route('/api/albums', methods=(['POST', 'GET']))
+@app.route('/api/albums', methods=['POST', 'GET'])
 def getAlbums():
     if request.method == 'POST':
         data = request.get_json()
@@ -157,7 +157,16 @@ def getAlbums():
                 "title": album.title,
                 "artist_name": album.artist.name,
                 "genre": album.genre,
-                "releaseDate": str(album.release_date)
+                "releaseDate": str(album.release_date),
+                "reviews": [
+                    {
+                        "review_id": review.review_id,
+                        "review_text": review.review_text,
+                        "review_date": str(review.review_date),
+                        "user_id": review.user_id
+                    }
+                    for review in album.reviews
+                ]
             }
             for album in albums
         ])
@@ -208,7 +217,6 @@ def handle_artist():
         ]), 200
 
     elif request.method == 'DELETE':
-        # Delete an artist by ID or name
         data = request.get_json()
         artist_id = data.get('artist_id')
         name = data.get('name')
@@ -239,27 +247,47 @@ def handle_artist():
 
 
 
-@app.route('/api/reviews')
-def getReviews(): 
-    
-    review = [
-        {
-            "id": 1,
-            "title": "YA I MISS MY CITY",
-            "author": "Jet",
-            "reviewDescription": "YA I MISS MY CITY, YA I MISS DUVAL!!!!",
-            "date": "2024-12-9"
-        },
-        {
-            "id": 2,
-            "title": "I would like to listen to more drain gang",
-            "author": "Jet",
-            "reviewDescription": "My roommates S[redacted]Y wrapped both had bladee as their number one artist so i had ot actualyl checkout drain gang of course!",
-            "date": "2024-12-8"
-        }
-    ]
-    return jsonify(review)
+@app.route('/api/reviews', methods=['GET', 'POST'])
+def get_or_post_reviews():
+    if request.method == 'POST':
+        data = request.get_json()
+        album_id = data.get('album_id')
+        review_text = data.get('review_text')
 
+        if not album_id or not review_text:
+            return jsonify({"message": "album_id and review_text are required"}), 400
+
+        album = Album.query.get(album_id)
+        if not album:
+            return jsonify({"message": "Invalid album_id"}), 404
+
+        new_review = Review(
+            rating=0,
+            review_text=review_text,
+            review_date=datetime.date.today(),
+            user_id=1,
+            album_id=album_id
+        )
+
+        db.session.add(new_review)
+        try:
+            db.session.commit()
+            return jsonify({"message": "Review added successfully"}), 201
+        except IntegrityError:
+            db.session.rollback()
+            return jsonify({"message": "Error creating review"}), 500
+
+    if request.method == 'GET':
+        reviews = Review.query.all()
+        return jsonify([
+            {
+                "review_id": r.review_id,
+                "review_text": r.review_text,
+                "review_date": str(r.review_date),
+                "album_id": r.album_id,
+                "user_id": r.user_id
+            } for r in reviews
+        ])
 
 # Running app
 if __name__ == '__main__':

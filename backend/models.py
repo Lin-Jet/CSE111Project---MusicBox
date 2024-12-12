@@ -32,6 +32,7 @@ class Album(db.Model):
     genre = db.Column(db.String(100), nullable=False)
     artist_id = db.Column(db.Integer, db.ForeignKey('Artist.artist_id'))
     artist = db.relationship('Artist', backref='albums')
+    reviews = db.relationship('Review', back_populates='album')
 
 class Review(db.Model):
     __tablename__ = 'Review'
@@ -41,6 +42,8 @@ class Review(db.Model):
     review_date = db.Column(db.Date)
     user_id = db.Column(db.Integer, db.ForeignKey('User.user_id'))
     album_id = db.Column(db.Integer, db.ForeignKey('Album.album_id'))
+    album = db.relationship('Album', back_populates='reviews')
+
 
 if __name__ == '__main__':
     db.drop_all()  # Drop existing tables

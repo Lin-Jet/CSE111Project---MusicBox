@@ -4,9 +4,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import logo from '../../imgs/logo.png';
 import LogoutButton from './LogOutBtn';
-import { CiHeart } from "react-icons/ci";
-import { FaHeart } from 'react-icons/fa'; // Add filled heart icon
-import { CiChat1 } from "react-icons/ci";
+import { FaHeart } from 'react-icons/fa';
+import { CiHeart, CiChat1 } from 'react-icons/ci';
 
 function Albums() {
     const navigate = useNavigate();
@@ -21,9 +20,10 @@ function Albums() {
         release_date: '',
     });
     const [artists, setArtists] = useState([]);
-    const [favorites, setFavorites] = useState(new Set()); // Track favorites
-    const [reviewingAlbumId, setReviewingAlbumId] = useState(null); // Track which album is being reviewed
-    const [reviewText, setReviewText] = useState(''); // Track user input in the review box
+    const [favorites, setFavorites] = useState(new Set());
+    const [reviewingAlbumId, setReviewingAlbumId] = useState(null);
+    const [reviewText, setReviewText] = useState('');
+    const [showReviews, setShowReviews] = useState(new Set());
 
     useEffect(() => {
         axios.get('http://127.0.0.1:5000/api/albums')
@@ -58,12 +58,9 @@ function Albums() {
 
         try {
             const response = await axios.post('http://127.0.0.1:5000/api/albums', newAlbum, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
             });
 
-            console.log('New album response:', response.data);
             if (response.status === 201) {
                 alert('Album added successfully!');
                 setAlbums([...albums, response.data]);
@@ -88,7 +85,6 @@ function Albums() {
     };
 
     const toggleReview = (id) => {
-        // If clicking the same album, close the box. Otherwise open for this album.
         if (reviewingAlbumId === id) {
             setReviewingAlbumId(null);
             setReviewText('');
@@ -98,17 +94,41 @@ function Albums() {
         }
     };
 
-    const submitReview = () => {
-        // Handle submission logic here if needed.
-        alert(`Review submitted for album ID ${reviewingAlbumId}: ${reviewText}`);
-        setReviewingAlbumId(null);
-        setReviewText('');
+    const submitReview = async () => {
+        if (!reviewText.trim()) {
+            alert("Review text cannot be empty.");
+            return;
+        }
 
-        
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/api/reviews', {
+                album_id: reviewingAlbumId,
+                review_text: reviewText
+            }, {
+                headers: { 'Content-Type': 'application/json' },
+            });
 
+            if (response.status === 201) {
+                alert('Review submitted successfully!');
+                setReviewingAlbumId(null);
+                setReviewText('');
+            }
+        } catch (error) {
+            console.error('Error submitting review:', error);
+            alert('Failed to submit review. Please try again.');
+        }
+    };
 
-
-
+    const toggleShowReviews = (id) => {
+        setShowReviews(prev => {
+            const newShowReviews = new Set(prev);
+            if (newShowReviews.has(id)) {
+                newShowReviews.delete(id);
+            } else {
+                newShowReviews.add(id);
+            }
+            return newShowReviews;
+        });
     };
 
     if (loading) {
@@ -203,6 +223,37 @@ function Albums() {
                                 >
                                     <CiChat1 />
                                 </button>
+
+                                <button
+                                    style={{
+                                        background: 'none',
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        fontSize: '1.2rem',
+                                        color: '#124ba2'
+                                    }}
+                                    onClick={() => toggleShowReviews(album.album_id)}
+                                >
+                                    {showReviews.has(album.album_id) ? 'Hide Reviews' : 'Show Reviews'}
+                                </button>
+
+                                {showReviews.has(album.album_id) && (
+                                    <div style={{ marginTop: '10px' }}>
+                                        <h3>Reviews:</h3>
+                                        {album.reviews.length === 0 ? (
+                                            <p>No reviews yet.</p>
+                                        ) : (
+                                            <ul style={{ listStyleType: 'none', padding: 0 }}>
+                                                {album.reviews.map(review => (
+                                                    <li key={review.review_id} style={{ marginBottom: '10px' }}>
+                                                        <p>{review.review_text}</p>
+                                                        <small>Reviewed on: {review.review_date}</small>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+                                )}
 
                                 {reviewingAlbumId === album.album_id && (
                                     <div style={{ marginTop: '10px' }}>
