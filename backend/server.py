@@ -11,14 +11,6 @@ from sqlalchemy.exc import IntegrityError
 x = datetime.datetime.now()
 
 
-# app = Flask(__name__)
-
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///musicbox.db'
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# db = SQLAlchemy(app)
-
-
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Signup route
@@ -33,7 +25,6 @@ def create_account():
     if data.get('role') not in ['User', 'Artist']:
         return jsonify({"message": "Invalid role specified"}), 400
 
-    # Check for duplicate email in the User table
     if db.session.query(User).filter_by(email=data['email']).first():
         return jsonify({"message": "Email already exists"}), 409
 
@@ -51,18 +42,16 @@ def create_account():
         db.session.add(new_user)
 
     elif data['role'] == 'Artist':
-        # Check for duplicate artist name
+
         if db.session.query(Artist).filter_by(name=f"{data['first_name']} {data['last_name']}").first():
             return jsonify({"message": "Artist name already exists"}), 409
 
-        # Create a new Artist
         new_artist = Artist(
             name=f"{data['first_name']} {data['last_name']}",
-            bio=data.get('bio', '')  # Optional bio field
+            bio=data.get('bio', '')
         )
         db.session.add(new_artist)
 
-    # Commit transaction
     try:
         db.session.commit()
         return jsonify({"message": f"{data['role']} account created successfully"}), 201
@@ -410,8 +399,23 @@ def get_or_post_reviews():
             } for r in reviews
         ])
 
+
+@app.route('/api/reviews/<int:review_id>', methods=['DELETE'])
+def delete_review(review_id):
+    review = Review.query.get(review_id)
+    if not review:
+        return jsonify({"message": "Review not found"}), 404
+
+    db.session.delete(review)
+    try:
+        db.session.commit()
+        return jsonify({"message": "Review deleted successfully"}), 200
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({"message": "Error deleting review"}), 500
+
 # Running app
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()  #create tables once and then jsut check if they exist each time.
+        db.create_all()
     app.run(debug=True)

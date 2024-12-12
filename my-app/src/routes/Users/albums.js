@@ -7,6 +7,7 @@ import logo from '../../imgs/logo.png';
 import LogoutButton from './LogOutBtn';
 import { FaHeart } from 'react-icons/fa';
 import { CiHeart, CiChat1 } from 'react-icons/ci';
+import { CiTrash } from "react-icons/ci";
 
 function Albums() {
     const navigate = useNavigate();
@@ -25,10 +26,7 @@ function Albums() {
     const [reviewingAlbumId, setReviewingAlbumId] = useState(null);
     const [reviewText, setReviewText] = useState('');
     const [showReviews, setShowReviews] = useState(new Set());
-
-    const [user, setUser] = useState(null); 
-
-    let newFavorites = new Set();
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         axios.get('http://127.0.0.1:5000/api/albums')
@@ -58,26 +56,34 @@ function Albums() {
     }, []);
 
     useEffect(() => {
-        // const userId = localStorage.getItem("userId"); 
-        const userId = 1;
+        const userId = localStorage.getItem("userId");
         if (!userId) {
-          navigate("/albums"); // Redirect to login if not logged in
-          console.log("Have not logged in")
-          return;
+            navigate("/albums"); // Redirect to login if not logged in
+            return;
         }
-    
+
         axios.get(`/api/user/${userId}`)
-          .then((response) => {
-            setUser(response.data);
-          })
-          .catch((error) => {
-            console.error("Error fetching user data:", error);
-            navigate("/albums"); // Redirect to login on error
-            console.log("get user id error")
-          });
+            .then((response) => {
+                setUser(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching user data:", error);
+                navigate("/albums"); // Redirect to login on error
+            });
     }, [navigate]);
 
-    
+    useEffect(() => {
+        if (user) {
+            axios.get(`http://127.0.0.1:5000/api/collection?user_id=${user.id}`)
+                .then(response => {
+                    const userFavorites = new Set(response.data.map(album => album.album_id));
+                    setFavorites(userFavorites);
+                })
+                .catch(error => {
+                    console.error('Error loading user collection:', error);
+                });
+        }
+    }, [user]);
 
     const handleAlbumSubmit = async (e) => {
         e.preventDefault();
@@ -107,19 +113,32 @@ function Albums() {
         }
     };
 
-    const toggleFavorite = (id) => {
-        setFavorites(prev => {
-            newFavorites = new Set(prev);
-            if (newFavorites.has(id)) {
-                newFavorites.delete(id);
-            } else {
-                newFavorites.add(id);
-            }
-            navigate('/collection')
-            console.log(newFavorites)
-            return newFavorites;
-        });
+    const toggleFavorite = async (albumId) => {
+        if (!user) {
+            alert('Please log in to add albums to your collection');
+            return;
+        }
 
+        const isFavorite = favorites.has(albumId);
+        const endpoint = isFavorite ? 'remove_from_collection' : 'add_to_collection';
+
+        try {
+            await axios.post(`http://127.0.0.1:5000/api/${endpoint}`, {
+                user_id: user.id,
+                album_id: albumId
+            });
+
+            const newFavorites = new Set(favorites);
+            if (isFavorite) {
+                newFavorites.delete(albumId);
+            } else {
+                newFavorites.add(albumId);
+            }
+            setFavorites(newFavorites);
+        } catch (error) {
+            console.error('Error updating collection:', error);
+            alert('Failed to update collection. Please try again.');
+        }
     };
 
     const toggleReview = (id) => {
@@ -154,6 +173,29 @@ function Albums() {
         } catch (error) {
             console.error('Error submitting review:', error);
             alert('Failed to submit review. Please try again.');
+        }
+    };
+
+    const deleteReview = async (reviewId, albumId) => {
+        if (!window.confirm('Are you sure you want to delete this review?')) return;
+
+        try {
+            const response = await axios.delete(`http://127.0.0.1:5000/api/reviews/${reviewId}`);
+            if (response.status === 200) {
+                alert('Review deleted successfully!');
+                setAlbums(albums.map(album => {
+                    if (album.album_id === albumId) {
+                        return {
+                            ...album,
+                            reviews: album.reviews.filter(review => review.review_id !== reviewId)
+                        };
+                    }
+                    return album;
+                }));
+            }
+        } catch (error) {
+            console.error('Error deleting review:', error);
+            alert('Failed to delete review. Please try again.');
         }
     };
 
@@ -218,18 +260,11 @@ function Albums() {
             <div className="album-list-745" style={{ padding: '20px', height: '500px', overflowY: 'scroll' }}>
                 <h2>Album List</h2>
                 {albums.length === 0 ? (
-                    <h1
-                    style ={{ color: '#ffffff', fontWeight: 'bold', marginBottom: '10px' }}
-                    >No albums found.</h1>
+                    <h1 style ={{ color: '#ffffff', fontWeight: 'bold', marginBottom: '10px' }}>No albums found.</h1>
                 ) : (
-                    <ul
-                        style={{ listStyleType: 'none',
-                            padding: 0,
-                        }}
-                    >
+                    <ul style={{ listStyleType: 'none', padding: 0 }}>
                         {albums.map(album => (
-                            <li key={album.album_id}
-                                style={{ marginBottom: '10px', position: 'relative' }}>
+                            <li key={album.album_id} style={{ marginBottom: '10px', position: 'relative' }}>
                                 <strong>{album.title}</strong> by {album.artist_name}
                                 <br />
                                 Genre: {album.genre}, Released: {album.release_date}
@@ -286,6 +321,19 @@ function Albums() {
                                                     <li key={review.review_id} style={{ marginBottom: '10px' }}>
                                                         <p>{review.review_text}</p>
                                                         <small>Reviewed on: {review.review_date}</small>
+                                                        <button
+                                                            style={{
+                                                                marginLeft: '10px',
+                                                                background: 'none',
+                                                                border: 'none',
+                                                                cursor: 'pointer',
+                                                                color: 'red',
+                                                                fontSize: '1.2rem'
+                                                            }}
+                                                            onClick={() => deleteReview(review.review_id, album.album_id)}
+                                                        >
+                                                            <CiTrash />
+                                                        </button>
                                                     </li>
                                                 ))}
                                             </ul>

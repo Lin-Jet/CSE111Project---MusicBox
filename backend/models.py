@@ -55,6 +55,14 @@ class Review(db.Model):
     album_id = db.Column(db.Integer, db.ForeignKey('Album.album_id'))
     album = db.relationship('Album', back_populates='reviews')
 
+class Songs(db.Model):
+    __tablename__ = 'Songs'
+    song_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(100), nullable=False)
+    artist_id = db.Column(db.Integer, db.ForeignKey('Artist.artist_id'))
+    album_id = db.Column(db.Integer, db.ForeignKey('Album.album_id'))
+    album = db.relationship('Album', backref='songs')
+
 
 if __name__ == '__main__':
     db.drop_all()  # Drop existing tables
