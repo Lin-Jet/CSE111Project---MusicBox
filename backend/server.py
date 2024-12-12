@@ -96,8 +96,6 @@ def login():
 # @app.route('/api/artistAlbums', methods=['POST', 'GET'])
 # def ArtistAlbums():
 
-
-
 @app.route('/api/albums', methods=(['POST', 'GET']))
 def getAlbums():
     if request.method == 'POST':

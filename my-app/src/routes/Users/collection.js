@@ -69,8 +69,8 @@ function Collection  () {
     return (
         <div className="index-745">
             <header className="index-header-745">
-                <h1 className="">Albums</h1>
-                <p className="sentence-745">Track favorites, review albums, and connect with other music lovers.</p>
+                <h1 className="">My Collections</h1>
+                <p className="sentence-745">View all all your liked songs</p>
                 <img src={logo} alt="Logo" style={{ display: 'none' }} />
             </header>
             <div className="album-list-745" style={{ padding: '20px' }}>
