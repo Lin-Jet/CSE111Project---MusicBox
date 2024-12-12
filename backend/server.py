@@ -4,7 +4,7 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
-from models import User, Artist, Album, Review, db, app
+from models import User, Artist, Album, Review, Collection, db, app
 from sqlalchemy.exc import IntegrityError
 
 
@@ -260,6 +260,33 @@ def get_user(user_id):
     }), 200
 
 
+@app.route('/api/collection', methods=['GET'])
+def getCollection():
+    albums = Album.query.all()
+
+    return jsonify([
+        {
+            "album_id": albums.album_id,
+            "title": album.title,
+            "artist_name": album.artist.name,
+            "genre": album.genre,
+            "releaseDate": str(album.release_date),
+            "reviews": [
+                {
+                    "review_id": review.review_id,
+                    "review_text": review.review_text,
+                    "review_date": str(review.review_date),
+                    "user_id": review.user_id
+                }
+                for review in album.reviews
+            ]
+        }
+        for album in albums
+    ])
+
+    # return jsonify({"message": "Method not allowed"}), 405
+
+
 @app.route('/api/add_to_collection', methods=['POST'])
 def add_to_collection():
     data = request.get_json()
@@ -289,6 +316,27 @@ def add_to_collection():
     except IntegrityError:
         db.session.rollback()
         return jsonify({"message": "Error adding album to collection"}), 500
+
+@app.route('/api/remove_from_collection', methods=['POST'])
+def remove_from_collection():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    album_id = data.get('album_id')
+
+    if not user_id or not album_id:
+        return jsonify({"message": "User ID and Album ID are required"}), 400
+
+    collection_entry = Collection.query.filter_by(user_id=user_id, album_id=album_id).first()
+    if not collection_entry:
+        return jsonify({"message": "Album not found in collection"}), 404
+
+    db.session.delete(collection_entry)
+    try:
+        db.session.commit()
+        return jsonify({"message": "Album removed from collection successfully"}), 200
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({"message": "Error removing album from collection"}), 500
 
 
 @app.route('/api/user_collection/<int:user_id>', methods=['GET'])
