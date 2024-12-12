@@ -26,6 +26,10 @@ function Albums() {
     const [reviewText, setReviewText] = useState('');
     const [showReviews, setShowReviews] = useState(new Set());
 
+    const [user, setUser] = useState(null); 
+
+    let newFavorites = new Set();
+
     useEffect(() => {
         axios.get('http://127.0.0.1:5000/api/albums')
             .then(response => {
@@ -52,6 +56,28 @@ function Albums() {
                 console.error('Error fetching artists:', error);
             });
     }, []);
+
+    useEffect(() => {
+        // const userId = localStorage.getItem("userId"); 
+        const userId = 1;
+        if (!userId) {
+          navigate("/albums"); // Redirect to login if not logged in
+          console.log("Have not logged in")
+          return;
+        }
+    
+        axios.get(`/api/user/${userId}`)
+          .then((response) => {
+            setUser(response.data);
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error);
+            navigate("/albums"); // Redirect to login on error
+            console.log("get user id error")
+          });
+    }, [navigate]);
+
+    
 
     const handleAlbumSubmit = async (e) => {
         e.preventDefault();
@@ -83,14 +109,17 @@ function Albums() {
 
     const toggleFavorite = (id) => {
         setFavorites(prev => {
-            const newFavorites = new Set(prev);
+            newFavorites = new Set(prev);
             if (newFavorites.has(id)) {
                 newFavorites.delete(id);
             } else {
                 newFavorites.add(id);
             }
+            navigate('/collection')
+            console.log(newFavorites)
             return newFavorites;
         });
+
     };
 
     const toggleReview = (id) => {
