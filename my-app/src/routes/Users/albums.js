@@ -107,20 +107,46 @@ function Albums() {
         }
     };
 
-    const toggleFavorite = (id) => {
+    const toggleFavorite = async (id) => {
         setFavorites(prev => {
-            newFavorites = new Set(prev);
+            const newFavorites = new Set(prev);
             if (newFavorites.has(id)) {
                 newFavorites.delete(id);
+                // Call API to remove the album from the collection
+                fetch('/api/remove_from_collection', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ album_id: id }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        console.error("Failed to remove album from collection");
+                    }
+                })
+                .catch(error => console.error("Error:", error));
             } else {
                 newFavorites.add(id);
+                // Call API to add the album to the collection
+                fetch('/api/add_to_collection', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ album_id: id }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        console.error("Failed to add album to collection");
+                    }
+                })
+                .catch(error => console.error("Error:", error));
             }
-            navigate('/collection')
-            console.log(newFavorites)
             return newFavorites;
         });
-
     };
+    
 
     const toggleReview = (id) => {
         if (reviewingAlbumId === id) {

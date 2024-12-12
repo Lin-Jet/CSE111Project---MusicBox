@@ -11,22 +11,26 @@ import LogoutButton from './LogOutBtn'
 function Collection  () {
 
     const navigate = useNavigate();
-    const [albums, setAlbums] = useState([]);
+    const [collectionList, setCollection] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:5000/api/albums')
+        console.log("useEffect triggered");
+        axios.get('http://127.0.0.1:5000/api/collection')
             .then(response => {
-                setAlbums(response.data || []);
+                console.log("API response:", response.data);
+                setCollection(response.data || []);
                 setLoading(false);
+                console.log(collectionList)
             })
             .catch(error => {
-                console.error('Error fetching albums:', error);
-                setError('Failed to load albums. Please try again later.');
+                console.error('Error fetching Collection:', error);
+                setError('Failed to load Collections. Please try again later.');
                 setLoading(false);
             });
     }, []);
+    
 
     if (loading) {
         return (
@@ -74,18 +78,17 @@ function Collection  () {
                 <img src={logo} alt="Logo" style={{ display: 'none' }} />
             </header>
             <div className="album-list-745" style={{ padding: '20px' }}>
-                <h2>Album List</h2>
-                {albums.length === 0 ? (
+                <h2>Collection List</h2>
+                {collectionList.length === 0 ? (
                     <h1
                         style ={{ color: '#ffffff', fontWeight: 'bold', marginBottom: '10px' }}
-                    >No albums found.</h1>
+                    >No collectionList found.</h1>
                 ) : (
                     <ul style={{ listStyleType: 'none', padding: 0 }}>
-                        {albums.map(album => (
-                            <li key={album.id} style={{ marginBottom: '10px' }}>
-                                <strong>{album.title}</strong> by {album.artist}
-                                <br />
-                                Genre: {album.genre}, Released: {album.release_date}
+                        {collectionList.map(collection => (
+                            <li key={collection.album_id} style={{ marginBottom: '10px' }}>
+                                <strong>{collection.title}</strong> 
+                                <p>{collection.album_id} </p>
                             </li>
                         ))}
                     </ul>
