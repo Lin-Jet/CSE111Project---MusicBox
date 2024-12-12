@@ -28,6 +28,7 @@ function Albums() {
 
     const [user, setUser] = useState(null); 
 
+
     let newFavorites = new Set();
 
     useEffect(() => {
@@ -61,7 +62,7 @@ function Albums() {
         // const userId = localStorage.getItem("userId"); 
         const userId = 1;
         if (!userId) {
-          navigate("/albums"); // Redirect to login if not logged in
+          navigate("/"); // Redirect to login if not logged in
           console.log("Have not logged in")
           return;
         }
@@ -107,7 +108,7 @@ function Albums() {
         }
     };
 
-    const toggleFavorite = async (id) => {
+    const toggleFavorite = async (userId, title, id) => {
         setFavorites(prev => {
             const newFavorites = new Set(prev);
             if (newFavorites.has(id)) {
@@ -129,12 +130,16 @@ function Albums() {
             } else {
                 newFavorites.add(id);
                 // Call API to add the album to the collection
+                console.log("hi");
+                console.log(userId['user_id']);
+                console.log(title);
+                console.log(id);
                 fetch('/api/add_to_collection', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ album_id: id }),
+                    body: JSON.stringify({ user_id: userId['user_id'], title: title, album_id: id}),
                 })
                 .then(response => {
                     if (!response.ok) {
@@ -270,7 +275,7 @@ function Albums() {
                                         marginRight: '10px',
                                         marginLeft: '10px'
                                     }}
-                                    onClick={() => toggleFavorite(album.album_id)}
+                                    onClick={() => toggleFavorite(user, album.title, album.album_id)}
                                 >
                                     {favorites.has(album.album_id) ? <FaHeart /> : <CiHeart />}
                                 </button>

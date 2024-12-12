@@ -81,14 +81,13 @@ function Collection  () {
                 <h2>Collection List</h2>
                 {collectionList.length === 0 ? (
                     <h1
-                        style ={{ color: '#ffffff', fontWeight: 'bold', marginBottom: '10px' }}
+                        style ={{ color: '#ffffff', fontWeight: 'bold', marginBottom: '10px'}}
                     >No collectionList found.</h1>
                 ) : (
                     <ul style={{ listStyleType: 'none', padding: 0 }}>
                         {collectionList.map(collection => (
                             <li key={collection.album_id} style={{ marginBottom: '10px' }}>
-                                <strong>{collection.title}</strong> 
-                                <p>{collection.album_id} </p>
+                                <strong className="collection-title">{collection.title}</strong> 
                             </li>
                         ))}
                     </ul>

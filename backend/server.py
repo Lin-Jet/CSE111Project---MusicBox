@@ -261,12 +261,13 @@ def get_user(user_id):
 @app.route('/api/collection', methods=['GET'])
 def getCollection():
     collectionList = Collection.query.all()
-
+    print("collectionList in server", collectionList)
     return jsonify([
         {
+            "user_id": collection.user_id,
+             "title": collection.title,
             "album_id": collection.album_id,
-            "album": collection.album,
-            "title": collection.title
+            "added_date": collection.added_date
         }
         for collection in collectionList
     ])
@@ -277,8 +278,18 @@ def getCollection():
 
 @app.route('/api/add_to_collection', methods=['POST'])
 def add_to_collection():
-    data = request.get_json()
+    data = request.get_json() #user_id, title, album_id, //added_date//
     album_id = data.get('album_id')
+    user_id_val = data.get('user_id')
+    # user_id_val = temp['user_id'] 
+    title = data.get('title')
+    added_date = datetime.date.today();
+
+    print("album_id", album_id)
+    print("user_id_val", user_id_val)
+    print("title", title)
+    print("added_date", added_date)
+
 
     if not album_id:
         return jsonify({"message": "Album ID are required"}), 400
@@ -292,7 +303,7 @@ def add_to_collection():
     if existing_entry:
         return jsonify({"message": "Album already in collection"}), 409
 
-    new_collection_entry = Collection(album_id=album_id)
+    new_collection_entry = Collection(user_id=user_id_val, title=title, album_id=album_id, added_date=added_date)
     db.session.add(new_collection_entry)
     try:
         db.session.commit()

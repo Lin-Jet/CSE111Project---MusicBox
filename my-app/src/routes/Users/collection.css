@@ -1,0 +1,10 @@
+
+.collection-title {
+    color: #ffffff;
+    transition: transform 0.3s ease-in-out;
+    font-size: 1.5rem;
+}
+.collection-title:hover {
+    transform: scale(1.1);
+    color: #ff6b6b;
+}
