@@ -4,7 +4,7 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
-from models import User, Artist, Album, Review, db, app
+from models import User, Artist, Album, Review, Collection, db, app
 from sqlalchemy.exc import IntegrityError
 
 
@@ -103,13 +103,11 @@ def getAlbums():
         title = data.get('title')
         artist_name = data.get('artist_name')
         genre = data.get('genre')
-        release_date = data.get('releaseDate')  # Using releaseDate from frontend
+        release_date = data.get('releaseDate')
 
         if not title or not artist_name:
             return jsonify({"message": "Title and artist_name are required"}), 400
-
-        # Convert release_date to a Date object if provided
-        release_date_obj = None
+            release_date_obj = None
         if release_date:
             try:
                 release_date_obj = datetime.datetime.strptime(release_date, "%Y-%m-%d").date()
@@ -312,15 +310,20 @@ def get_user_collection(user_id):
 
 
 
+
 @app.route('/api/reviews', methods=['GET', 'POST'])
 def get_or_post_reviews():
     if request.method == 'POST':
         data = request.get_json()
         album_id = data.get('album_id')
         review_text = data.get('review_text')
+        user_id = 1  # Implement this function to get the current user's ID
 
         if not album_id or not review_text:
             return jsonify({"message": "album_id and review_text are required"}), 400
+
+        if not user_id:
+            return jsonify({"message": "User not authenticated"}), 401
 
         album = Album.query.get(album_id)
         if not album:
@@ -330,7 +333,7 @@ def get_or_post_reviews():
             rating=0,
             review_text=review_text,
             review_date=datetime.date.today(),
-            user_id=1,
+            user_id=user_id,
             album_id=album_id
         )
 
@@ -343,7 +346,12 @@ def get_or_post_reviews():
             return jsonify({"message": "Error creating review"}), 500
 
     if request.method == 'GET':
-        reviews = Review.query.all()
+        user_id = 1
+
+        if not user_id:
+            return jsonify({"message": "User not authenticated"}), 401
+
+        reviews = Review.query.filter_by(user_id=user_id).all()
         return jsonify([
             {
                 "review_id": r.review_id,
@@ -357,5 +365,5 @@ def get_or_post_reviews():
 # Running app
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()  #create tables once and then jsut check if they exist each time. 
+        db.create_all()  #create tables once and then jsut check if they exist each time.
     app.run(debug=True)

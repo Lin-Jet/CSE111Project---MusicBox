@@ -1,3 +1,4 @@
+import moment from 'moment';
 import "./users.scss";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
@@ -28,7 +29,11 @@ function Albums() {
     useEffect(() => {
         axios.get('http://127.0.0.1:5000/api/albums')
             .then(response => {
-                setAlbums(response.data || []);
+                const formattedAlbums = response.data.map(album => ({
+                    ...album,
+                    release_date: moment(album.release_date).format('MM/DD/YYYY')
+                }));
+                setAlbums(formattedAlbums);
                 setLoading(false);
             })
             .catch(error => {
@@ -63,7 +68,11 @@ function Albums() {
 
             if (response.status === 201) {
                 alert('Album added successfully!');
-                setAlbums([...albums, response.data]);
+                const addedAlbum = {
+                    ...response.data,
+                    release_date: moment(response.data.release_date).format('MM/DD/YYYY')
+                };
+                setAlbums([...albums, addedAlbum]);
                 setNewAlbum({ album_id: '', title: '', artist_name: '', genre: '', release_date: '' });
             }
         } catch (error) {
@@ -177,7 +186,7 @@ function Albums() {
                 <p className="sentence-745">Track favorites, review albums, and connect with other music lovers.</p>
                 <img src={logo} alt="Logo" style={{ display: 'none' }} />
             </header>
-            <div className="album-list-745" style={{ padding: '20px' }}>
+            <div className="album-list-745" style={{ padding: '20px', height: '500px', overflowY: 'scroll' }}>
                 <h2>Album List</h2>
                 {albums.length === 0 ? (
                     <h1

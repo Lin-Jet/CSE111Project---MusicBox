@@ -3,10 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import logo from "../../imgs/logo.png";
-import LogoutButton from './LogOutBtn'
+import LogoutButton from './LogOutBtn';
 
-
-function Reviews () {
+function Reviews() {
     const navigate = useNavigate();
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -70,7 +69,7 @@ function Reviews () {
                 <p className="info-946">Read and share your thoughts on albums.</p>
                 <img src={logo} alt="Logo" style={{ display: 'none' }} />
             </header>
-            <div className="reviews-list-946" style={{ padding: '20px' }}>
+            <div className="reviews-list-946" style={{ padding: '20px', height: '500px', overflowY: 'scroll'}}>
                 <h2 className="sub-title-946">Review List</h2>
                 {reviews.length === 0 ? (
                     <h1 style={{ color: '#ffffff', fontWeight: 'bold', marginBottom: '10px' }}>
@@ -79,11 +78,11 @@ function Reviews () {
                 ) : (
                     <ul style={{ listStyleType: 'none', padding: 0 }}>
                         {reviews.map(review => (
-                            <li key={review.id} style={{ marginBottom: '10px' }}>
-                                <strong>{review.title}</strong> by {review.author}
-                                <p>{review.reviewDescription}</p>
+                            <li key={review.review_id} style={{ marginBottom: '10px' }}>
+                                <strong>{review.album_title}</strong>
+                                <p>{review.review_text}</p>
                                 <br />
-                                Posted on: {review.date}
+                                Posted on: {review.review_date}
                             </li>
                         ))}
                     </ul>
