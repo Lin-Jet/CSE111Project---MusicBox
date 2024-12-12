@@ -56,9 +56,10 @@ function Albums() {
     }, []);
 
     useEffect(() => {
-        const userId = localStorage.getItem("userId");
+        // const userId = localStorage.getItem("userId");
+        const userId = 1;
         if (!userId) {
-            navigate("/albums"); // Redirect to login if not logged in
+            navigate("/"); // Redirect to login if not logged in
             return;
         }
 
@@ -113,32 +114,48 @@ function Albums() {
         }
     };
 
-    const toggleFavorite = async (albumId) => {
-        if (!user) {
-            alert('Please log in to add albums to your collection');
-            return;
-        }
-
-        const isFavorite = favorites.has(albumId);
-        const endpoint = isFavorite ? 'remove_from_collection' : 'add_to_collection';
-
-        try {
-            await axios.post(`http://127.0.0.1:5000/api/${endpoint}`, {
-                user_id: user.id,
-                album_id: albumId
-            });
-
-            const newFavorites = new Set(favorites);
-            if (isFavorite) {
-                newFavorites.delete(albumId);
+    const toggleFavorite = async (userId, title, id) => {
+        setFavorites(prev => {
+            const newFavorites = new Set(prev);
+            if (newFavorites.has(id)) {
+                newFavorites.delete(id);
+                // Call API to remove the album from the collection
+                fetch('/api/remove_from_collection', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ user_id: userId['user_id'], title: title, album_id: id}),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        console.error("Failed to remove album from collection");
+                    }
+                })
+                .catch(error => console.error("Error:", error));
             } else {
-                newFavorites.add(albumId);
+                newFavorites.add(id);
+                // Call API to add the album to the collection
+                console.log("hi");
+                console.log(userId['user_id']);
+                console.log(title);
+                console.log(id);
+                fetch('/api/add_to_collection', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ user_id: userId['user_id'], title: title, album_id: id}),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        console.error("Failed to add album to collection");
+                    }
+                })
+                .catch(error => console.error("Error:", error));
             }
-            setFavorites(newFavorites);
-        } catch (error) {
-            console.error('Error updating collection:', error);
-            alert('Failed to update collection. Please try again.');
-        }
+            return newFavorites;
+        });
     };
 
     const toggleReview = (id) => {
@@ -279,7 +296,7 @@ function Albums() {
                                         marginRight: '10px',
                                         marginLeft: '10px'
                                     }}
-                                    onClick={() => toggleFavorite(album.album_id)}
+                                    onClick={() => toggleFavorite(user, album.title, album.album_id)}
                                 >
                                     {favorites.has(album.album_id) ? <FaHeart /> : <CiHeart />}
                                 </button>

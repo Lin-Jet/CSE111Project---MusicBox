@@ -11,6 +11,14 @@ from sqlalchemy.exc import IntegrityError
 x = datetime.datetime.now()
 
 
+# app = Flask(__name__)
+
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///musicbox.db'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# db = SQLAlchemy(app)
+
+
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Signup route
@@ -25,11 +33,13 @@ def create_account():
     if data.get('role') not in ['User', 'Artist']:
         return jsonify({"message": "Invalid role specified"}), 400
 
+    # Check for duplicate email in the User table
     if db.session.query(User).filter_by(email=data['email']).first():
         return jsonify({"message": "Email already exists"}), 409
 
     hashed_password = generate_password_hash(data['password'], method='pbkdf2:sha256')
 
+   
     if data['role'] == 'User':
         # Create a new User
         new_user = User(
@@ -42,16 +52,18 @@ def create_account():
         db.session.add(new_user)
 
     elif data['role'] == 'Artist':
-
+        # Check for duplicate artist name
         if db.session.query(Artist).filter_by(name=f"{data['first_name']} {data['last_name']}").first():
             return jsonify({"message": "Artist name already exists"}), 409
 
+        # Create a new Artist
         new_artist = Artist(
             name=f"{data['first_name']} {data['last_name']}",
-            bio=data.get('bio', '')
+            bio=data.get('bio', '')  # Optional bio field
         )
         db.session.add(new_artist)
 
+    # Commit transaction
     try:
         db.session.commit()
         return jsonify({"message": f"{data['role']} account created successfully"}), 201
@@ -67,19 +79,21 @@ def login():
     if not data.get('email') or not data.get('password'):
         return jsonify({"message": "Email and password are required"}), 400
 
-    user = db.session.query(User).filter_by(email=data['email']).first()
-    if user and check_password_hash(user.password, data['password']):
-        return jsonify({
-            "message": "Login successful",
-            "user": {
-                "id": user.user_id,
-                "username": user.username,
-                "email": user.email,
-                "role": user.role
-            }
-        }), 200
-    else:
-        return jsonify({"message": "Invalid email or password"}), 401
+    if data['role'] == 'User':
+        user = db.session.query(User).filter_by(email=data['email']).first()
+        if user and check_password_hash(user.password, data['password']):
+            return jsonify({
+                "message": "Login successful",
+                "user": {
+                    "id": user.user_id,
+                    "username": user.username,
+                    "email": user.email,
+                    "role": user.role
+                }
+            }), 200
+        else:
+            return jsonify({"message": "Invalid email or password"}), 401
+        
 
 
 # @app.route('/api/artistAlbums', methods=['POST', 'GET'])
@@ -247,28 +261,18 @@ def get_user(user_id):
     }), 200
 
 
+
 @app.route('/api/collection', methods=['GET'])
 def getCollection():
-    albums = Album.query.all()
-
+    collectionList = Collection.query.all()
     return jsonify([
         {
-            "album_id": albums.album_id,
-            "title": album.title,
-            "artist_name": album.artist.name,
-            "genre": album.genre,
-            "releaseDate": str(album.release_date),
-            "reviews": [
-                {
-                    "review_id": review.review_id,
-                    "review_text": review.review_text,
-                    "review_date": str(review.review_date),
-                    "user_id": review.user_id
-                }
-                for review in album.reviews
-            ]
+            "user_id": collection.user_id,
+            "title": collection.title,
+            "album_id": collection.album_id,
+            "added_date": collection.added_date
         }
-        for album in albums
+        for collection in collectionList
     ])
 
     # return jsonify({"message": "Method not allowed"}), 405
@@ -276,26 +280,32 @@ def getCollection():
 
 @app.route('/api/add_to_collection', methods=['POST'])
 def add_to_collection():
-    data = request.get_json()
-    user_id = data.get('user_id')
+    data = request.get_json() #user_id, title, album_id, //added_date//
     album_id = data.get('album_id')
+    user_id_val = data.get('user_id')
+    # user_id_val = temp['user_id'] 
+    title = data.get('title')
+    added_date = datetime.date.today();
 
-    if not user_id or not album_id:
-        return jsonify({"message": "User ID and Album ID are required"}), 400
+    print("album_id", album_id)
+    print("user_id_val", user_id_val)
+    print("title", title)
+    print("added_date", added_date)
 
-    user = User.query.get(user_id)
+
+    if not album_id:
+        return jsonify({"message": "Album ID are required"}), 400
+
     album = Album.query.get(album_id)
 
-    if not user:
-        return jsonify({"message": "User not found"}), 404
     if not album:
         return jsonify({"message": "Album not found"}), 404
 
-    existing_entry = Collection.query.filter_by(user_id=user_id, album_id=album_id).first()
+    existing_entry = Collection.query.filter_by(album_id=album_id).first()
     if existing_entry:
         return jsonify({"message": "Album already in collection"}), 409
 
-    new_collection_entry = Collection(user_id=user_id, album_id=album_id)
+    new_collection_entry = Collection(user_id=user_id_val, title=title, album_id=album_id, added_date=added_date)
     db.session.add(new_collection_entry)
     try:
         db.session.commit()
@@ -309,11 +319,12 @@ def remove_from_collection():
     data = request.get_json()
     user_id = data.get('user_id')
     album_id = data.get('album_id')
+    title = data.get('title')
 
     if not user_id or not album_id:
         return jsonify({"message": "User ID and Album ID are required"}), 400
 
-    collection_entry = Collection.query.filter_by(user_id=user_id, album_id=album_id).first()
+    collection_entry = Collection.query.filter_by(user_id=user_id, album_id=album_id, title=title).first()
     if not collection_entry:
         return jsonify({"message": "Album not found in collection"}), 404
 
@@ -324,7 +335,6 @@ def remove_from_collection():
     except IntegrityError:
         db.session.rollback()
         return jsonify({"message": "Error removing album from collection"}), 500
-
 
 @app.route('/api/user_collection/<int:user_id>', methods=['GET'])
 def get_user_collection(user_id):

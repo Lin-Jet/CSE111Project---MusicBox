@@ -145,4 +145,15 @@
   cursor: pointer;
 }
 
+.album-list-745 ul li strong{
+  color: black;
+  transition-duration: 0.4s;
+}
+
+.album-list-745 ul li strong:hover{
+  color: blue;
+  cursor: pointer;
+  transition-duration: 0.4s;
+  filter: hue-rotate(360deg);
+}
 
