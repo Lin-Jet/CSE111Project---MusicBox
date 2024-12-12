@@ -317,11 +317,12 @@ def remove_from_collection():
     data = request.get_json()
     user_id = data.get('user_id')
     album_id = data.get('album_id')
+    title = data.get('title')
 
     if not user_id or not album_id:
         return jsonify({"message": "User ID and Album ID are required"}), 400
 
-    collection_entry = Collection.query.filter_by(user_id=user_id, album_id=album_id).first()
+    collection_entry = Collection.query.filter_by(user_id=user_id, album_id=album_id, title=title).first()
     if not collection_entry:
         return jsonify({"message": "Album not found in collection"}), 404
 

@@ -119,7 +119,7 @@ function Albums() {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ album_id: id }),
+                    body: JSON.stringify({ user_id: userId['user_id'], title: title, album_id: id}),
                 })
                 .then(response => {
                     if (!response.ok) {
