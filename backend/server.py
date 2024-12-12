@@ -174,6 +174,19 @@ def getAlbums():
 
     return jsonify({"message": "Method not allowed"}), 405
 
+@app.route('/api/user/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    return jsonify({
+        "user_id": user.user_id,
+        "username": user.username,
+        "email": user.email,
+        "role": user.role
+    }), 200
+
 
 @app.route('/api/artist', methods=['POST', 'GET', 'DELETE'])
 def handle_artist():
@@ -246,19 +259,6 @@ def handle_artist():
     return jsonify({"message": "Invalid method"}), 405
 
 
-
-@app.route('/api/user/<int:user_id>', methods=['GET'])
-def get_user(user_id):
-    user = User.query.get(user_id)
-    if not user:
-        return jsonify({"message": "User not found"}), 404
-
-    return jsonify({
-        "user_id": user.user_id,
-        "username": user.username,
-        "email": user.email,
-        "role": user.role
-    }), 200
 
 
 
