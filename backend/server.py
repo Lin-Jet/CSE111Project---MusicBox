@@ -11,12 +11,12 @@ from sqlalchemy.exc import IntegrityError
 x = datetime.datetime.now()
 
 
-app = Flask(__name__)
+# app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///musicbox.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///musicbox.db'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+# db = SQLAlchemy(app)
 
 
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -74,7 +74,7 @@ def create_account():
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
-
+    
     if not data.get('email') or not data.get('password'):
         return jsonify({"message": "Email and password are required"}), 400
 
@@ -238,7 +238,69 @@ def handle_artist():
 
     return jsonify({"message": "Invalid method"}), 405
 
+@app.route('/api/user/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"message": "User not found"}), 404
 
+    return jsonify({
+        "user_id": user.user_id,
+        "username": user.username,
+        "email": user.email,
+        "role": user.role
+    }), 200
+
+
+@app.route('/api/add_to_collection', methods=['POST'])
+def add_to_collection():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    album_id = data.get('album_id')
+
+    if not user_id or not album_id:
+        return jsonify({"message": "User ID and Album ID are required"}), 400
+
+    user = User.query.get(user_id)
+    album = Album.query.get(album_id)
+
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+    if not album:
+        return jsonify({"message": "Album not found"}), 404
+
+    existing_entry = Collection.query.filter_by(user_id=user_id, album_id=album_id).first()
+    if existing_entry:
+        return jsonify({"message": "Album already in collection"}), 409
+
+    new_collection_entry = Collection(user_id=user_id, album_id=album_id)
+    db.session.add(new_collection_entry)
+    try:
+        db.session.commit()
+        return jsonify({"message": "Album added to collection successfully"}), 201
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({"message": "Error adding album to collection"}), 500
+
+
+@app.route('/api/user_collection/<int:user_id>', methods=['GET'])
+def get_user_collection(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    collections = Collection.query.filter_by(user_id=user_id).all()
+    return jsonify([
+        {
+            "album_id": c.album.album_id,
+            "title": c.album.title,
+            "artist_name": c.album.artist.name,
+            "genre": c.album.genre,
+            "release_date": str(c.album.release_date),
+            "added_date": str(c.added_date)
+        }
+        for c in collections
+    ]), 200
 
 
 @app.route('/api/reviews')

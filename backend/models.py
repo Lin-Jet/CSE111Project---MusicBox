@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+import datetime
 
 app = Flask(__name__)
 
@@ -41,6 +42,16 @@ class Review(db.Model):
     review_date = db.Column(db.Date)
     user_id = db.Column(db.Integer, db.ForeignKey('User.user_id'))
     album_id = db.Column(db.Integer, db.ForeignKey('Album.album_id'))
+
+class Collection(db.Model):
+    __tablename__ = 'Collection'
+    user_id = db.Column(db.Integer, db.ForeignKey('User.user_id'), primary_key=True)
+    album_id = db.Column(db.Integer, db.ForeignKey('Album.album_id'), primary_key=True)
+    added_date = db.Column(db.Date, default=datetime.date.today)
+
+    user = db.relationship('User', backref='collections')
+    album = db.relationship('Album', backref='collections')
+
 
 if __name__ == '__main__':
     db.drop_all()  # Drop existing tables
