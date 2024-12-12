@@ -38,6 +38,7 @@ class Album(db.Model):
 class Collection(db.Model):
     __tablename__ = 'Collection'
     user_id = db.Column(db.Integer, db.ForeignKey('User.user_id'), primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
     album_id = db.Column(db.Integer, db.ForeignKey('Album.album_id'), primary_key=True)
     added_date = db.Column(db.Date, default=datetime.date.today)
 

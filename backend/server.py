@@ -260,27 +260,17 @@ def get_user(user_id):
 
 @app.route('/api/collection', methods=['GET'])
 def getCollection():
-    albums = Album.query.all()
+    collectionList = Collection.query.all()
 
     return jsonify([
         {
-            "album_id": albums.album_id,
-            "title": album.title,
-            "artist_name": album.artist.name,
-            "genre": album.genre,
-            "releaseDate": str(album.release_date),
-            "reviews": [
-                {
-                    "review_id": review.review_id,
-                    "review_text": review.review_text,
-                    "review_date": str(review.review_date),
-                    "user_id": review.user_id
-                }
-                for review in album.reviews
-            ]
+            "album_id": collection.album_id,
+            "album": collection.album,
+            "title": collection.title
         }
-        for album in albums
+        for collection in collectionList
     ])
+
 
     # return jsonify({"message": "Method not allowed"}), 405
 
@@ -288,25 +278,21 @@ def getCollection():
 @app.route('/api/add_to_collection', methods=['POST'])
 def add_to_collection():
     data = request.get_json()
-    user_id = data.get('user_id')
     album_id = data.get('album_id')
 
-    if not user_id or not album_id:
-        return jsonify({"message": "User ID and Album ID are required"}), 400
+    if not album_id:
+        return jsonify({"message": "Album ID are required"}), 400
 
-    user = User.query.get(user_id)
     album = Album.query.get(album_id)
 
-    if not user:
-        return jsonify({"message": "User not found"}), 404
     if not album:
         return jsonify({"message": "Album not found"}), 404
 
-    existing_entry = Collection.query.filter_by(user_id=user_id, album_id=album_id).first()
+    existing_entry = Collection.query.filter_by(album_id=album_id).first()
     if existing_entry:
         return jsonify({"message": "Album already in collection"}), 409
 
-    new_collection_entry = Collection(user_id=user_id, album_id=album_id)
+    new_collection_entry = Collection(album_id=album_id)
     db.session.add(new_collection_entry)
     try:
         db.session.commit()
